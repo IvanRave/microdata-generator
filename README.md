@@ -8,14 +8,16 @@ Update a DOM element with current state of an entity.
 Install
 ---
 
-```npm install --save github.com/ivanrave/microdata-generator```
+```npm install --save-dev ivanrave/microdata-generator```
 
 
 Usage
 ---
 
-```
-var gen = require('microdataGenerator');
+`main.js`
+
+```js
+var gen = require('microdata-generator');
 
 /**
  * @param {Object} elemRow A DOM element (container) for an entity
@@ -24,11 +26,26 @@ var gen = require('microdataGenerator');
  *        no path levels for a root element only.
  * @param {String} entitySchema Schema.org itemtype, like 'Person'
  * @param {Object} entity An object in computed-state format
- *        https://github.com/ivanRave/computed-state
+ *        https://github.com/ivanrave/computed-state
  *        like 'student', 'person', 'thing', 'membership'
  * @param {Object} typeCheckers Validators for all property types
  * @param {Boolean} isGlobalDisplayOnly Read mode (no write mode)
  * @returns {Object} Fulfilled DOM element for this entity
  */
  var updatedContainer = gen(...);
+```
+
+Style usage
+---
+
+Attach default styles using [postcss-import](https://github.com/postcss/postcss-import)
+
+`main.css`
+
+```css
+@import "microdata-generator/index.css";
+
+body {
+  ...
+}
 ```
