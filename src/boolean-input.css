@@ -1,0 +1,70 @@
+/** https://jsfiddle.net/IvanRave/vp2h2xx3/8/ */
+
+:root {
+  --track-width: 50px;
+  --track-height: calc(var(--track-width) / 2);
+  --knob-width: calc(var(--track-width) / 2 - 4px);
+}
+
+.boolean-input {
+  position: absolute;
+  opacity: 0;
+  width: var(--track-width);
+  height: var(--track-height);
+  z-index: 1000;
+  margin: 0;
+  display: block;
+
+  /* Normal Track */
+  & + div {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: absolute;
+    width: var(--track-width);
+    height: var(--track-height);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0.1);
+    -webkit-transition-duration: 0.4s;
+    -webkit-transition-property: background-color, box-shadow;
+    box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0.4);
+  }
+
+  /* Checked Track (Blue) */
+  &:checked + div {
+    width: var(--track-width);
+    background-position: 0 0;
+    background-color: #3b89ec;
+    border: 1px solid #0e62cd;
+    box-shadow: inset 0 0 0 10px rgba(59, 137, 259, 1);
+  }
+
+  /* Normal Knob */
+  & + div > div {
+    box-sizing: border-box;
+    float: left;
+    width: var(--knob-width);
+    height: var(--knob-width);
+    border-radius: inherit;
+    background: #fff;
+    -webkit-transition-timing-function: cubic-bezier(0.54, 1.85, 0.5, 1);
+    -webkit-transition-duration: 0.4s;
+    -webkit-transition-property: transform, background-color, box-shadow;
+    -moz-transition-timing-function: cubic-bezier(0.54, 1.85, 0.5, 1);
+    -moz-transition-duration: 0.4s;
+    -moz-transition-property: transform, background-color;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    margin: 1px 0 0 1px;
+    padding: 0;
+  }
+
+  /* Checked Knob (Blue Style) */
+  &:checked + div > div {
+    -webkit-transform: translate3d(25px, 0, 0);
+    -moz-transform: translate3d(16px, 0, 0);
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(8, 80, 172, 1);
+  }
+}

@@ -1,0 +1,22 @@
+.boolean-display {
+  /* do not display true|false */
+  span {
+    display: none;
+  }
+
+  &[data-state] {
+    padding: 4px;
+  }
+
+  &[data-state="false"] {
+    background: red;
+  }
+
+  &[data-state="true"] {
+    background: green;
+  }
+
+  &[data-state="null"] {
+    background: yellow;
+  }
+}

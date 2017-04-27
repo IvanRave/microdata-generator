@@ -1,0 +1,28 @@
+.date-input {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  padding: 6px 4px;
+  border: 1px solid #aaa;
+
+  /* http://stackoverflow.com/questions/11320615/disable-native-datepicker-in-google-chrome */
+  &::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+
+  &::-webkit-input-placeholder {
+    visibility: hidden !important;
+  }
+
+  &::-webkit-clear-button {
+    display: none;
+  }
+
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  &:invalid::-webkit-datetime-edit {
+    color: #ccc;
+  }
+}
