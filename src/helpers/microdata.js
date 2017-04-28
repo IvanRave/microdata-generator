@@ -30,22 +30,22 @@ helper.markProperty = function(propertyElem, propertyName, sameAsPropertyName) {
 };
 
 // https://schema.org/ItemList
-helper.markPropertyAsListItem = function(elem, position) {
+helper.markPropertyAsListItem = function(elem) {
   helper.markProperty(elem, 'itemListElement');
 
-  // if 'position' not exists - insert it
-  const existingElem = elem.querySelector('[itemprop=position]');
+  // // if 'position' not exists - insert it
+  // const existingElem = elem.querySelector('[itemprop=position]');
 
-  if (existingElem) {
-    // just change the position (if the list order is changed)
-    existingElem.content = position;
-    return;
-  }
+  // if (existingElem) {
+  //   // just change the position (if the list order is changed)
+  //   existingElem.content = position;
+  //   return;
+  // }
 
-  const positionElem = document.createElement('meta');
-  positionElem.setAttribute('itemprop', 'position');
-  positionElem.content = position;
-  elem.appendChild(positionElem);
+  // const positionElem = document.createElement('meta');
+  // positionElem.setAttribute('itemprop', 'position');
+  // positionElem.content = position;
+  // elem.appendChild(positionElem);
 };
 
 module.exports = helper;

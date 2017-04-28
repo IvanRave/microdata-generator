@@ -35,7 +35,7 @@ module.exports = {
 
     // update or insert
     // TODO: index -> position
-    entityList.forEach(function(entity, index) {
+    entityList.forEach(function(entity) {
       if (!entity) {
         throw new Error('required_entity');
       }
@@ -48,7 +48,7 @@ module.exports = {
                                          entity,
                                          isGlobalDisplayOnly);
 
-      microdata.markPropertyAsListItem(elemEntity, index + 1);
+      microdata.markPropertyAsListItem(elemEntity); // , index + 1
 
       if (isGlobalDisplayOnly) { return; }
 
