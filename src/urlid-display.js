@@ -11,8 +11,11 @@ module.exports = {
       throw new Error('required_url: ' + elem.id);
     }
 
+    // index - defatul site page - default (root) entity ID
+    const resultLink = '/' +  (urlid === 'index' ? '' : urlid);
+
     // TODO: add a main host (calculate by js)
-    elem.href = '/' + urlid;
-    elem.textContent = '/' + urlid;
+    elem.href = resultLink;
+    elem.textContent = resultLink;
   }
 };
