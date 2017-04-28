@@ -8,6 +8,7 @@
 const propFactory = require('./prop-factory');
 const propSetter = require('./prop-setter');
 const microdata = require('./helpers/microdata');
+const microdataTypes = require('microdata-types');
 const propRow = require('./prop-row');
 
 const entityListWrapper = require('./entity-list-wrapper');
@@ -51,7 +52,6 @@ const destroyEntityElem = function(elemRow,
  * @param {Object} entity An object in computed-state format
  *        https://github.com/ivanRave/computed-state
  *        like 'student', 'person', 'thing', 'membership'
- * @param {Object} typeCheckers Validators for all property types
  * @param {Boolean} isGlobalDisplayOnly Read mode (no write mode)
  * @returns {Object} Fulfilled DOM element for this entity
  */
@@ -59,12 +59,7 @@ const buildEntityElem = function(elemRow,
                                  entityPathLevels,
                                  entitySchema,
                                  entity,
-                                 typeCheckers,
                                  isGlobalDisplayOnly) {
-  if (!typeCheckers) {
-    throw new Error('required_typeCheckers');
-  }
-
   const allPathLevels = ['root'].concat(entityPathLevels);
 
   const elemEntityId = allPathLevels.join(SEPAR) + '_content';
@@ -95,7 +90,7 @@ const buildEntityElem = function(elemRow,
 
   // console.log('elemEntityContent', elemEntityContent);
   // update or create
-  buildElementsFromSettings(elemEntity, entityPathLevels, entity, typeCheckers, isGlobalDisplayOnly); // eslint-disable-line
+  buildElementsFromSettings(elemEntity, entityPathLevels, entity, isGlobalDisplayOnly); // eslint-disable-line
 
   return elemEntity;
 };
@@ -111,7 +106,6 @@ const createElemInsertId = function(idPropType, typeChecker, pathLevels) {
 const findOrCreateElemSection = function(elemRow,
                                          elemSectionId,
                                          entitySettings,
-                                         typeCheckers,
                                          pathLevels,
                                          isGlobalDisplayOnly) {
   const elemExisting = elemRow.querySelector('#' + elemSectionId);
@@ -131,7 +125,7 @@ const findOrCreateElemSection = function(elemRow,
 
   const idPropType = idSetting.type; // 'Country' | 'Integer'
 
-  const typeChecker = typeCheckers[idPropType];
+  const typeChecker = microdataTypes[idPropType];
   if (!isGlobalDisplayOnly) {
     const elemInsertId = createElemInsertId(idPropType, typeChecker, pathLevels);
     // TODO: or in ItemList element, like [].push
@@ -159,7 +153,6 @@ const buildEntityListElem = function(elemRow,
                                      entitySchema,
                                      entitySettings,
                                      entityList,
-                                     typeCheckers,
                                      isGlobalDisplayOnly) {
   if (pathLevels.length < 1) {
     throw new Error('required_path_levels_non_empty');
@@ -172,7 +165,6 @@ const buildEntityListElem = function(elemRow,
   const elemSection = findOrCreateElemSection(elemRow,
                                               elemSectionId,
                                               entitySettings,
-                                              typeCheckers,
                                               pathLevels,
                                               isGlobalDisplayOnly);
 
@@ -180,7 +172,6 @@ const buildEntityListElem = function(elemRow,
                                 entityList,
                                 entitySchema,
                                 pathLevels,
-                                typeCheckers,
                                 isGlobalDisplayOnly,
                                 buildEntityElem,
                                 PRIMARY_KEY);
@@ -205,8 +196,7 @@ const buildSimpleElem = function(elemRow,
                                  propName,
                                  propType,
                                  propValue,
-                                 isDisplayOnly,
-                                 typeCheckers) {
+                                 isDisplayOnly) {
   const allPathLevels = ['root'].concat(parentPathLevels.concat(propName));
 
   const propContentId = allPathLevels.join(SEPAR) + '_content';
@@ -214,7 +204,7 @@ const buildSimpleElem = function(elemRow,
   let elemProp = elemRow.querySelector('#' + propContentId);
 
   if (!elemProp) {
-    const typeChecker = typeCheckers[propType];
+    const typeChecker = microdataTypes[propType];
 
     // a property is created, then - filled with data
     if (isDisplayOnly) {
@@ -238,7 +228,7 @@ const buildSimpleElem = function(elemRow,
   return elemProp;
 };
 
-const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, propValue, typeCheckers, isPropDisplayOnly) {
+const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, propValue, isPropDisplayOnly) {
   if (!propName || !propSetting) {
     throw new Error('required_propName_propSetting');
   }
@@ -280,7 +270,6 @@ const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, 
                              pathLevels,
                              childEntitySchema,
                              propValue,
-                             typeCheckers,
                              isPropDisplayOnly);
 
       // only root element without propName
@@ -304,7 +293,6 @@ const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, 
                                  childEntitySchema,
                                  childEntitySettings,
                                  propValue || [],
-                                 typeCheckers,
                                  isPropDisplayOnly); // TODO: null array
     default:
       return buildSimpleElem(elemRow,
@@ -312,8 +300,7 @@ const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, 
                              propName,
                              propType,
                              propValue,
-                             isPropDisplayOnly,
-                             typeCheckers);
+                             isPropDisplayOnly);
   }
 };
 
@@ -327,7 +314,7 @@ const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, 
  * @param {Object} entity Like { firtsName: 'Jane' }
  * @returns {Object[]} List of DOM elements
  */
-const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity, typeCheckers, isGlobalDisplayOnly) {
+const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity, isGlobalDisplayOnly) {
   if (!entity || !elemEntity) {
     // entityElement can not exist without an entity
     throw new Error('entity_and_elemEntity_must_exist');
@@ -385,7 +372,7 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
       //   throw new Error('not_realized_update_prop');
     }
 
-    const anyElem = buildAnyElem(elemRow, propName, propSetting, parentPathLevels, propValue, typeCheckers, isPropDisplayOnly);
+    const anyElem = buildAnyElem(elemRow, propName, propSetting, parentPathLevels, propValue, isPropDisplayOnly);
 
     if (anyElem) {
       microdata.markProperty(anyElem, propName, propSetting.sameAsProperty);

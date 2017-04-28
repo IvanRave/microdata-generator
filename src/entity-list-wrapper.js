@@ -6,7 +6,7 @@ const SEPAR = '__';
 const microdata = require('./helpers/microdata');
 
 module.exports = {
-  updateItems: function(elemSection, entityList, entitySchema, pathLevels, typeCheckers, isGlobalDisplayOnly, buildEntityElem, PRIMARY_KEY) {
+  updateItems: function(elemSection, entityList, entitySchema, pathLevels, isGlobalDisplayOnly, buildEntityElem, PRIMARY_KEY) {
     if (!elemSection) {
       throw new Error('required_elemSection');
     }
@@ -46,7 +46,6 @@ module.exports = {
                                          entityPathLevels,
                                          entitySchema,
                                          entity,
-                                         typeCheckers,
                                          isGlobalDisplayOnly);
 
       microdata.markPropertyAsListItem(elemEntity, index + 1);

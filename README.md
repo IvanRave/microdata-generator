@@ -28,7 +28,6 @@ var gen = require('microdata-generator');
  * @param {Object} entity An object in computed-state format
  *        https://github.com/ivanrave/computed-state
  *        like 'student', 'person', 'thing', 'membership'
- * @param {Object} typeCheckers Validators for all property types
  * @param {Boolean} isGlobalDisplayOnly Read mode (no write mode)
  * @returns {Object} Fulfilled DOM element for this entity
  */
