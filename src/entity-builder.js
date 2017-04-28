@@ -115,7 +115,8 @@ const findOrCreateElemSection = function(elemRow,
   // TODO: change to UL or something listable
   const elemCreated = document.createElement('div');
   elemCreated.id = elemSectionId;
-  microdata.markEntityList(elemCreated);
+  const propName = pathLevels[pathLevels.length - 1];
+  microdata.markEntityList(elemCreated, propName);
   elemRow.appendChild(elemCreated);
 
   const idSetting = entitySettings[PRIMARY_KEY];
@@ -125,9 +126,8 @@ const findOrCreateElemSection = function(elemRow,
 
   const idPropType = idSetting.type; // 'Country' | 'Integer'
 
-  const typeChecker = microdataTypes[idPropType];
   if (!isGlobalDisplayOnly) {
-    const elemInsertId = createElemInsertId(idPropType, typeChecker, pathLevels);
+    const elemInsertId = createElemInsertId(idPropType, microdataTypes[idPropType], pathLevels);
     // TODO: or in ItemList element, like [].push
     elemRow.appendChild(elemInsertId);
   }

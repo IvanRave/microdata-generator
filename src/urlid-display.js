@@ -12,7 +12,7 @@ module.exports = {
     }
 
     // index - defatul site page - default (root) entity ID
-    const resultLink = '/' +  (urlid === 'index' ? '' : urlid);
+    const resultLink = '/' + (urlid === 'index' ? '' : urlid);
 
     // TODO: add a main host (calculate by js)
     elem.href = resultLink;

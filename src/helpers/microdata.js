@@ -1,5 +1,7 @@
 'use strict';
 
+const SCHEMA_ORG = 'http://schema.org/';
+
 const helper = {
   // constants
   ENTITY: 'Item',
@@ -8,12 +10,15 @@ const helper = {
 
 helper.markEntity = function(entityElem, schemaName) {
   entityElem.setAttribute('itemscope', '');
-  entityElem.setAttribute('itemtype', 'http://schema.org/' + schemaName);
+  entityElem.setAttribute('itemtype', SCHEMA_ORG + schemaName);
 };
 
-helper.markEntityList = function(elem) {
+helper.markEntityList = function(elem, propName) {
   elem.setAttribute('itemscope', '');
-  elem.setAttribute('itemtype', 'http://schema.org/ItemList');
+  // http://schema.org/OfferCatalog inherits ItemList
+  //  for hasOfferCatalog only
+  const schemaNameForList = propName === 'hasOfferCatalog' ? 'OfferCatalog' : helper.ENTITY_LIST;
+  elem.setAttribute('itemtype', SCHEMA_ORG + schemaNameForList);
 };
 
 helper.markProperty = function(propertyElem, propertyName, sameAsPropertyName) {
