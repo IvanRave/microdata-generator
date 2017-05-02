@@ -21,12 +21,24 @@ helper.markEntityList = function(elem, propName) {
   elem.setAttribute('itemtype', SCHEMA_ORG + schemaNameForList);
 };
 
-helper.markProperty = function(propertyElem, propertyName, sameAsPropertyName) {
-  // like 'url contentUrl' for images
-  const val = propertyName +
-        (sameAsPropertyName ? (' ' + sameAsPropertyName) : '');
+const calculateMarkedName = function(propertyName, sameAsPropertyName) {
+  if (sameAsPropertyName) {
+    if (sameAsPropertyName === 'sameAs') {
+      // e.g. 'fb sameAs', 'vk sameAs' - remove non-existing properties
+      return 'sameAs';
+    }
 
-  propertyElem.setAttribute('itemprop', val);
+    // e.g. 'url contentUrl' for images
+    return propertyName + ' ' + sameAsPropertyName;
+  }
+
+  return propertyName;
+};
+
+helper.markProperty = function(propertyElem, propertyName, sameAsPropertyName) {
+  if (!propertyName) { throw new Error('required_propertyName'); }
+
+  propertyElem.setAttribute('itemprop', calculateMarkedName(propertyName, sameAsPropertyName));
 };
 
 // https://schema.org/ItemList
