@@ -107,6 +107,7 @@ const findOrCreateElemSection = function(elemRow,
                                          elemSectionId,
                                          entitySettings,
                                          pathLevels,
+                                         isHashMap,
                                          isGlobalDisplayOnly) {
   const elemExisting = elemRow.querySelector('#' + elemSectionId);
 
@@ -116,7 +117,9 @@ const findOrCreateElemSection = function(elemRow,
   const elemCreated = document.createElement('div');
   elemCreated.id = elemSectionId;
   const propName = pathLevels[pathLevels.length - 1];
-  microdata.markEntityList(elemCreated, propName);
+  if (!isHashMap) {
+    microdata.markEntityList(elemCreated, propName);
+  }
   elemRow.appendChild(elemCreated);
 
   const idSetting = entitySettings[PRIMARY_KEY];
@@ -144,15 +147,17 @@ const findOrCreateElemSection = function(elemRow,
  * It doesnt depends of property name of a parent entity
  * @param {String[]} pathLevels Like ['university', 'students']
  *        Last String must be plural (collection of entities)
- * @param {Object} entitySettings A template for an item of this collection
  * @param {String} entitySchema A schema for an item of this collection, like 'Person'
+ * @param {Object} entitySettings A template for an item of this collection
  * @returns {Object} DOM element: list of items
  */
 const buildEntityListElem = function(elemRow,
                                      pathLevels,
+                                     parentPropName, // last of pathLevels
                                      entitySchema,
                                      entitySettings,
                                      entityList,
+                                     isHashMap,
                                      isGlobalDisplayOnly) {
   if (pathLevels.length < 1) {
     throw new Error('required_path_levels_non_empty');
@@ -166,14 +171,17 @@ const buildEntityListElem = function(elemRow,
                                               elemSectionId,
                                               entitySettings,
                                               pathLevels,
+                                              isHashMap,
                                               isGlobalDisplayOnly);
 
   entityListWrapper.updateItems(elemSection,
                                 entityList,
                                 entitySchema,
                                 pathLevels,
+                                parentPropName,
                                 isGlobalDisplayOnly,
                                 buildEntityElem,
+                                isHashMap,
                                 PRIMARY_KEY);
 
   return elemSection;
@@ -228,7 +236,12 @@ const buildSimpleElem = function(elemRow,
   return elemProp;
 };
 
-const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, propValue, isPropDisplayOnly) {
+const buildAnyElem = function(elemRow,
+                              propName,
+                              propSetting,
+                              parentPathLevels,
+                              propValue,
+                              isPropDisplayOnly) {
   if (!propName || !propSetting) {
     throw new Error('required_propName_propSetting');
   }
@@ -244,6 +257,8 @@ const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, 
   }
 
   const childEntitySettings = propSetting.refSettings;
+  // ItemList as a HashMap
+  const isHashMap = propSetting.isHashMap;
   // TODO: schema from inner entity
   const childEntitySchema = propSetting.schema;
 
@@ -290,9 +305,11 @@ const buildAnyElem = function(elemRow, propName, propSetting, parentPathLevels, 
       // propValue can be null (for non-existing entities)
       return buildEntityListElem(elemRow,
                                  pathLevels,
+                                 propName,
                                  childEntitySchema,
                                  childEntitySettings,
                                  propValue || [],
+                                 isHashMap,
                                  isPropDisplayOnly); // TODO: null array
     default:
       return buildSimpleElem(elemRow,
@@ -375,7 +392,9 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
     const anyElem = buildAnyElem(elemRow, propName, propSetting, parentPathLevels, propValue, isPropDisplayOnly);
 
     if (anyElem) {
-      microdata.markProperty(anyElem, propName, propSetting.sameAsProperty);
+      if (propSetting.isHashMap !== true) {
+        microdata.markProperty(anyElem, propName, propSetting.sameAsProperty);
+      }
     }
   });
 };

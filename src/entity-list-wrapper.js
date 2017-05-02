@@ -6,7 +6,15 @@ const SEPAR = '__';
 const microdata = require('./helpers/microdata');
 
 module.exports = {
-  updateItems: function(elemSection, entityList, entitySchema, pathLevels, isGlobalDisplayOnly, buildEntityElem, PRIMARY_KEY) {
+  updateItems: function(elemSection,
+                        entityList,
+                        entitySchema,
+                        pathLevels,
+                        parentPropName,
+                        isGlobalDisplayOnly,
+                        buildEntityElem,
+                        isHashMap,
+                        PRIMARY_KEY) {
     if (!elemSection) {
       throw new Error('required_elemSection');
     }
@@ -48,7 +56,12 @@ module.exports = {
                                          entity,
                                          isGlobalDisplayOnly);
 
-      microdata.markPropertyAsListItem(elemEntity); // , index + 1
+      if (isHashMap) {
+        // offers: [{}, {}]
+        microdata.markProperty(elemEntity, parentPropName);
+      } else {
+        microdata.markPropertyAsListItem(elemEntity); // , index + 1
+      }
 
       if (isGlobalDisplayOnly) { return; }
 
