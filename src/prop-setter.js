@@ -70,6 +70,34 @@ const setInputValue = function(elemInput, value) {
   elem.title = String(value);
 };
 
+const selectHandler = function(schemaType) {
+  switch (schemaType) {
+    case 'URL':
+      return UrlDisplay;
+    case 'URLID':
+      return UrlIdDisplay;
+    case 'Telephone':
+      return TelephoneDisplay;
+    case 'Email':
+      return EmailDisplay;
+    case 'Image':
+      return ImageDisplay;
+    case 'Boolean':
+      return BooleanDisplay;
+    case 'Date':
+      return DateDisplay;
+    default:
+        // .update(elem, value);
+      return {
+        update: function(elem, value) {
+          elem.textContent = value === null ? '' : (value + '');
+          // TODO debugging
+          elem.title = String(value);
+        }
+      }
+  }
+};
+
 const setDisplayValue = function(elemDisplay, value) {
   const elem = elemDisplay;
 
@@ -83,33 +111,9 @@ const setDisplayValue = function(elemDisplay, value) {
     throw new Error('required_data-schema-type');
   }
 
-  switch (schemaType) {
-    case 'URL':
-      UrlDisplay.update(elem, value);
-      return;
-    case 'URLID':
-      UrlIdDisplay.update(elem, value);
-      return;
-    case 'Telephone':
-      TelephoneDisplay.update(elem, value);
-      return;
-    case 'Email':
-      EmailDisplay.update(elem, value);
-      return;
-    case 'Image':
-      ImageDisplay.update(elem, value);
-      return;
-    case 'Boolean':
-      BooleanDisplay.update(elem, value);
-      return;
-    case 'Date':
-      DateDisplay.update(elem, value);
-      return;
-    default:
-      elem.textContent = value === null ? '' : (value + '');
-      // TODO debugging
-      elem.title = String(value);
-  }
+  const handler = selectHandler(schemaType);
+
+  handler.update(elem, value);
 };
 
 module.exports = {

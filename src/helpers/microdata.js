@@ -38,7 +38,17 @@ const calculateMarkedName = function(propertyName, sameAsPropertyName) {
 helper.markProperty = function(propertyElem, propertyName, sameAsPropertyName) {
   if (!propertyName) { throw new Error('required_propertyName'); }
 
-  propertyElem.setAttribute('itemprop', calculateMarkedName(propertyName, sameAsPropertyName));
+  // Microdata validators do not like empty values
+  // - simple elems, like spans
+  // - meta with no content ('' or undefined)
+  // - images with src ('' or undefined)
+  if (propertyElem.innerHTML === '' &&
+      !propertyElem.content &&
+      !propertyElem.src) {
+    propertyElem.removeAttribute('itemprop');
+  } else {
+    propertyElem.setAttribute('itemprop', calculateMarkedName(propertyName, sameAsPropertyName));
+  }
 };
 
 // https://schema.org/ItemList

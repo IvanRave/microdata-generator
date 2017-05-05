@@ -70,3 +70,33 @@ Google:
 Один из вариантов: заменить тэг на тэг по умолчанию (a --> span). При этом надо скопировать все аттрибуты из прежнего тэга.
 
 Валидатор микроразметки требует наличия href для значений-ссылок. Как хак, можно скрыть сам факт наличия свойства (удалить itemprop атрибут).
+
+
+Документо-ориентированная модель
+---
+
+Один "Сервис" может иметь несколько "Предложений" (один ко многим)
+Одно "Предложение" содержит ссылку на один "Сервис" (один к одному)
+Одно "Предложение" содержит ссылку на одного "Продавца" (один к одному)
+Один "Продавец" может иметь несколько "Предложений" (один ко многим)
+
+Сущность "Предложение" является ассоциативной между "Сервисом" и "Продавцом"
+
+На разных страницах эта модель может быть представлена с разной корневой сущностью:
+- Продавец -> список предложений ( + сервисов)
+- Сервис -> список предложений ( + продавцов)
+- Предложение -> сервис и продавец
+
+
+Перечень объектов
+---
+
+> Use markup for a specific product, not a category or list of products. For example, “shoes in our shop” is not a specific product. See also our [structured data policies](https://developers.google.com/search/docs/guides/intro-structured-data#multiple-entities-on-the-same-page) for multiple entities on the same page.
+
+https://developers.google.com/search/docs/data-types/products
+
+> A category page listing several different products (or recipes, videos, or any other type). Each entity should be marked up using the relevant schema.org type, such as schema.org/Product for product category pages. Marking up just one category entity from all listed on the page is against our guidelines.
+
+https://blog.heppresearch.com/2015/07/09/google-product-rich-snippets-for-multiple-products-on-a-page/
+
+> the main entity is a http://schema.org/SearchResultsPage type, linked to the seven offers via http://schema.org/offers. This is wrong, because the offers property for a http://schema.org/SearchResultsPage type is inherited from http://schema.org/CreativeWork and links to offers of the creative work.

@@ -389,6 +389,7 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
       //   throw new Error('not_realized_update_prop');
     }
 
+    // create or update
     const anyElem = buildAnyElem(elemRow, propName, propSetting, parentPathLevels, propValue, isPropDisplayOnly);
 
     if (anyElem) {
