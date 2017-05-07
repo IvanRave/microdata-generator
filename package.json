@@ -1,6 +1,6 @@
 {
   "name": "microdata-generator",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Generate an html markup from an entity (js object). Update a DOM element with current state of an entity.",
   "main": "index.js",
   "style": "index.css",
@@ -10,7 +10,8 @@
   },
   "scripts": {
     "lint": "eslint --ext .js index.js src/. test/.",
-    "lint-css": "stylelint index.css src/*.css"
+    "lint-css": "stylelint index.css src/*.css",
+    "test": "mocha ./src/**/*.spec.js"
   },
   "author": "Ivan Reyvart",
   "license": "Apache-2.0",
@@ -18,9 +19,12 @@
     "microdata-types": "github:ivanrave/microdata-types"
   },
   "devDependencies": {
+    "chai": "3.x",
     "eslint": "3.x",
     "eslint-config-airbnb-base": "10.x",
     "eslint-plugin-import": "2.x",
+    "jsdom": "10.x",
+    "mocha": "3.x",
     "stylelint": "7.x",
     "stylelint-config-standard": "16.x"
   }

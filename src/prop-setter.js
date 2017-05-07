@@ -94,7 +94,7 @@ const selectHandler = function(schemaType) {
           // TODO debugging
           elem.title = String(value);
         }
-      }
+      };
   }
 };
 
