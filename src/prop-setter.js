@@ -65,9 +65,6 @@ const setInputValue = function(elemInput, value) {
         elem.removeAttribute('value');
       }
   }
-
-  // debugging
-  elem.title = String(value);
 };
 
 const selectHandler = function(schemaType) {
@@ -91,8 +88,6 @@ const selectHandler = function(schemaType) {
       return {
         update: function(elem, value) {
           elem.textContent = value === null ? '' : (value + '');
-          // TODO debugging
-          elem.title = String(value);
         }
       };
   }
