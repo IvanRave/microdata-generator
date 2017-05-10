@@ -100,3 +100,13 @@ https://developers.google.com/search/docs/data-types/products
 https://blog.heppresearch.com/2015/07/09/google-product-rich-snippets-for-multiple-products-on-a-page/
 
 > the main entity is a http://schema.org/SearchResultsPage type, linked to the seven offers via http://schema.org/offers. This is wrong, because the offers property for a http://schema.org/SearchResultsPage type is inherited from http://schema.org/CreativeWork and links to offers of the creative work.
+
+
+Идентификатор сущности
+---
+
+Должны ли ДОМ-элементы содержать идентификаторы?
+
+- itemtype + itemprop: доступ к конкретному свойству сущности заданного типа, например к свойству "заголовок" всех сущностей типа "рекламный блок" на странице
+- если необходим доступ к конкретному "рекламному блоку", можно прописать всю иерархию от корневой сущности
+- если необходим доступ к конкретному элементу из списка сущностей, можно использовать порядковый номер в списке. Если массив неупорядоченный
