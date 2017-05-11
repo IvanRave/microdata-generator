@@ -5,9 +5,12 @@ const SEPAR = '__';
 
 const microdata = require('./helpers/microdata');
 
-const calculateEntityId = function(entity, PRIMARY_KEY) {
+const calculateEntityId = function(entityUrlId) {
+  if (!entityUrlId) {
+    throw new Error('required_entityUrlId');
+  }
   // URLID type
-  const entityIdParts = entity[PRIMARY_KEY].split('|');
+  const entityIdParts = entityUrlId.split('|');
   return entityIdParts[1] || entityIdParts[0];
 };
 
@@ -33,7 +36,11 @@ module.exports = {
     const allPathLevels = ['root'].concat(pathLevels);
 
     const ids = entityList.map(function(entity) {
-      return allPathLevels.concat(calculateEntityId(entity, PRIMARY_KEY)).join(SEPAR) + '_content';
+      const entityUrlId = entity[PRIMARY_KEY];
+      if (!entityUrlId) {
+        throw new Error('required_urlid: ' + pathLevels.join('.'));
+      }
+      return allPathLevels.concat(calculateEntityId(entityUrlId)).join(SEPAR) + '_content';
     });
 
     const currentElems = elemSection.children;
@@ -54,7 +61,7 @@ module.exports = {
         throw new Error('required_entity');
       }
 
-      const entityId = calculateEntityId(entity, PRIMARY_KEY);
+      const entityId = calculateEntityId(entity[PRIMARY_KEY]);
       const entityPathLevels = pathLevels.concat(entityId);
 
       const elemEntity = buildEntityElem(elemSection,
@@ -82,7 +89,7 @@ module.exports = {
       buttonRemoveItem.type = 'button';
       buttonRemoveItem.setAttribute('data-action', 'removeItem');
       const oidObject = {};
-      oidObject[PRIMARY_KEY] = calculateEntityId(entity, PRIMARY_KEY);
+      oidObject[PRIMARY_KEY] = calculateEntityId(entity[PRIMARY_KEY]);
 
       buttonRemoveItem.setAttribute('data-entity-oid', JSON.stringify(oidObject));
       buttonRemoveItem.setAttribute('data-entity-list-path', pathLevels.join('.'));
