@@ -1,10 +1,10 @@
-/** Date as a string: YYYY-MM */
+/** Date as a string: YYYY-MM-DD */
 
 'use strict';
 
-const convertIsoDate = function(isoDate) {
-  return isoDate.substring(0, 7);
-};
+// const convertIsoDate = function(isoDate) {
+//   return isoDate.substring(0, 7);
+// };
 
 module.exports = {
   build: function() {
@@ -16,7 +16,7 @@ module.exports = {
       elem.textContent = '';
     } else {
       elem.setAttribute('content', value);
-      elem.textContent = convertIsoDate(value);
+      elem.textContent = value; // convertIsoDate(value);
     }
   }
 };

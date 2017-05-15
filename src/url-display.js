@@ -23,7 +23,7 @@ module.exports = {
     } else {
       elem.removeAttribute('content');
       elem.removeAttribute('href');
-      console.warn('no_url: ' + elem.id);
+      // console.warn('no_url: ' + elem.id);
     }
   }
 };

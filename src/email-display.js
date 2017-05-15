@@ -7,7 +7,7 @@ module.exports = {
   update: function(elem, value) {
     elem.innerHTML = '';
     if (!value) {
-      console.log('optional_email: ' + elem.id);
+      // console.log('optional_email: ' + elem.id);
       return;
     }
 

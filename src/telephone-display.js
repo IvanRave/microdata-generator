@@ -23,7 +23,7 @@ module.exports = {
   update: function(elem, value) {
     elem.innerHTML = '';
     if (!value) {
-      console.log('optional_telephone: ' + elem.id);
+      // console.log('optional_telephone: ' + elem.id);
       return;
     }
 
