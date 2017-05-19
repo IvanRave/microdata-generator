@@ -18,11 +18,13 @@ module.exports = {
       a.href = url;
       a.textContent = urlText;
       elem.setAttribute('content', url);
-      elem.setAttribute('href', url);
+      // TODO: yandex required only href
+      // AMP: The attribute 'href' may not appear in tag 'span'.
+      // elem.setAttribute('href', url);
       elem.appendChild(a);
     } else {
       elem.removeAttribute('content');
-      elem.removeAttribute('href');
+      // elem.removeAttribute('href');
       // console.warn('no_url: ' + elem.id);
     }
   }
