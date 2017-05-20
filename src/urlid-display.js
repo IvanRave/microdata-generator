@@ -13,7 +13,6 @@
  *
  * URL and ID must contain allowed characters only
  *   HTML4: ID and NAME tokens must begin with a letter ([A-Za-z]) and may be followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".").
- * 
  *
  * URL = SiteDomain + Table + ID
  * or
