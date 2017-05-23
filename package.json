@@ -1,6 +1,6 @@
 {
   "name": "microdata-generator",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Generate an html markup from an entity (js object). Update a DOM element with current state of an entity.",
   "main": "index.js",
   "style": "index.css",
