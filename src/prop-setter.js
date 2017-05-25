@@ -11,6 +11,8 @@ const TelephoneDisplay = require('./telephone-display');
 const EmailDisplay = require('./email-display');
 const ImageDisplay = require('./image-display');
 const BooleanDisplay = require('./boolean-display');
+const TextDisplay = require('./text-display');
+const NumberDisplay = require('./number-display');
 
 const reselectOptions = function(elem, value) {
   const options = elem.children;
@@ -67,6 +69,7 @@ const setInputValue = function(elemInput, value) {
   }
 };
 
+// the same as propFactory
 const selectHandler = function(schemaType) {
   switch (schemaType) {
     case 'URL':
@@ -83,13 +86,15 @@ const selectHandler = function(schemaType) {
       return BooleanDisplay;
     case 'Date':
       return DateDisplay;
+    case 'Text':
+      return TextDisplay;
+    case 'Number':
+    case 'Integer':
+    case 'Float':
+    case 'Age':
+      return NumberDisplay;
     default:
-        // .update(elem, value);
-      return {
-        update: function(elem, value) {
-          elem.textContent = value === null ? '' : (value + '');
-        }
-      };
+      throw new Error('propSetter: tag_is_not_supported: ' + schemaType);
   }
 };
 

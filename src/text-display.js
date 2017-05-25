@@ -1,5 +1,10 @@
 'use strict';
 
-module.exports = function() {
-  return document.createElement('span');
+module.exports = {
+  build: function() {
+    return document.createElement('span');
+  },
+  update: function(elem, value) {
+    elem.textContent = value === null ? '' : (value + '');
+  }
 };

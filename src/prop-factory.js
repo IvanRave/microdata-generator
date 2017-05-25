@@ -71,30 +71,27 @@ const calculateInput = function(tag) {
 
 const calculateDisplay = function(tag) {
   switch (tag) {
-    case 'boolean-display':
-      return BooleanDisplay.build;
+    case 'url-display':
+      return UrlDisplay;
+    case 'urlid-display':
+      return UrlIdDisplay;
     case 'telephone-display':
-      return TelephoneDisplay.build;
+      return TelephoneDisplay;
     case 'email-display':
-      return EmailDisplay.build;
+      return EmailDisplay;
+    case 'image-display':
+      return ImageDisplay;
+    case 'boolean-display':
+      return BooleanDisplay;
+    case 'date-display':
+      return DateDisplay;
     case 'text-display':
       return TextDisplay;
-    case 'url-display':
-      return UrlDisplay.build;
-    case 'urlid-display':
-      return UrlIdDisplay.build;
-    case 'image-display':
-      return ImageDisplay.build;
     case 'number-display':
     case 'integer-display':
     case 'float-display':
     case 'age-display':
       return NumberDisplay;
-    case 'date-display':
-      return DateDisplay.build;
-      // case 'duration-display':
-      //   return DurationDisplay;
-
     default:
       throw new Error('tag_is_not_supported: ' + tag);
   }
@@ -104,6 +101,7 @@ module.exports = {
   createInput: function(propType, typeChecker) {
     const tag = propType.toLowerCase() + '-input';
 
+    // TODO: add 'build' to input controls
     const elemClass = calculateInput(tag);
 
     const elem = elemClass(typeChecker);
@@ -117,7 +115,7 @@ module.exports = {
   createDisplay: function(propType, typeChecker) {
     const tag = propType.toLowerCase() + '-display';
 
-    const elemClass = calculateDisplay(tag);
+    const elemClass = calculateDisplay(tag).build;
 
     const elem = elemClass(typeChecker);
 
