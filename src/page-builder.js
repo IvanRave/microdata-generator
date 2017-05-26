@@ -44,24 +44,24 @@ ${ampHelper.COMMON_STYLE}
 <body>
 <div id="root"></div>
 ${config.ANALYTICS_GOOGLE ? ampHelper.buildAnalyticsElement('googleanalytics', {
-  "vars": {
-    "account": config.ANALYTICS_GOOGLE
+  vars: {
+    account: config.ANALYTICS_GOOGLE
   },
-  "triggers": {
-    "track_pageview": {
-      "on": "visible",
-      "request": "pageview"
+  triggers: {
+    track_pageview: {
+      on: 'visible',
+      request: 'pageview'
     }
   }
 }) : ''}
 ${config.ANALYTICS_YANDEX ? ampHelper.buildAnalyticsElement('metrika', {
-  "vars": {
-    "counterId": config.ANALYTICS_YANDEX
+  vars: {
+    counterId: config.ANALYTICS_YANDEX
   },
-  "triggers": {
-    "track_pageview": {
-      "on": "visible",
-      "request": "pageview"
+  triggers: {
+    track_pageview: {
+      on: 'visible',
+      request: 'pageview'
     }
   }
 }) : ''}

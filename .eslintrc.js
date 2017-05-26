@@ -5,7 +5,7 @@ module.exports = {
     "browser": true,
     "commonjs": true,
     "mocha": true,
-    "es6": false,
+    "es6": true,
     "node": true
   },
   "extends": [

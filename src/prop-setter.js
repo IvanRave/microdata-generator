@@ -12,6 +12,7 @@ const EmailDisplay = require('./email-display');
 const ImageDisplay = require('./image-display');
 const BooleanDisplay = require('./boolean-display');
 const TextDisplay = require('./text-display');
+const MultitextDisplay = require('./multitext-display');
 const NumberDisplay = require('./number-display');
 
 const reselectOptions = function(elem, value) {
@@ -88,6 +89,8 @@ const selectHandler = function(schemaType) {
       return DateDisplay;
     case 'Text':
       return TextDisplay;
+    case 'Multitext':
+      return MultitextDisplay;
     case 'Number':
     case 'Integer':
     case 'Float':

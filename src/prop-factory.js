@@ -22,6 +22,7 @@
 // browserify doesnt support dynamic requires
 const BooleanDisplay = require('./boolean-display');
 const TextDisplay = require('./text-display');
+const MultitextDisplay = require('./multitext-display');
 const TelephoneDisplay = require('./telephone-display');
 const EmailDisplay = require('./email-display');
 const NumberDisplay = require('./number-display');
@@ -87,6 +88,8 @@ const calculateDisplay = function(tag) {
       return DateDisplay;
     case 'text-display':
       return TextDisplay;
+    case 'multitext-display':
+      return MultitextDisplay;
     case 'number-display':
     case 'integer-display':
     case 'float-display':

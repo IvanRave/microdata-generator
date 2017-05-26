@@ -51,6 +51,6 @@ module.exports = {
    * ua UA-xxxxxx-x
    */
   buildAnalyticsElement: function(vendor, config) {
-    return `<amp-analytics type="${vendor}"><script type="application/json">${JSON.stringify(config)}</script></amp-analytics>`
+    return `<amp-analytics type="${vendor}"><script type="application/json">${JSON.stringify(config)}</script></amp-analytics>`;
   }
 };
