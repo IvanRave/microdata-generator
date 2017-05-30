@@ -36,7 +36,6 @@ ${config.IS_ANALYTICS ? ampHelper.ANALYTICS_SCRIPT : ''}
 ${ampHelper.COMMON_SCRIPT}
 <title>${rootEntity.name || rootEntity.headline}</title>
 <link rel="canonical" href="${config.APP_DOMAIN}/${entityUrl}" />
-<meta name="description" content="${rootEntity.description}">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 ${ampHelper.COMMON_STYLE}
 <style amp-custom>${rootStyle}</style>
@@ -69,6 +68,20 @@ ${config.ANALYTICS_YANDEX ? ampHelper.buildAnalyticsElement('metrika', {
 </html>`);
 
     global.document = dom.window.document;
+
+    if (rootEntity.description) {
+      // <meta name="description" content="${rootEntity.description}">
+      // a problem with some symbols. like '"'
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = rootEntity.description
+        .replace(/"/g, '')
+        .replace(/\n/g, ' ');
+
+      document.getElementsByTagName('head')[0].appendChild(meta);
+    } else {
+      console.log('warning_description: ' + entityUrl);
+    }
 
     const rootContainer = document.getElementById('root');
 
