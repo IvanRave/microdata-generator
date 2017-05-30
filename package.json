@@ -16,14 +16,14 @@
   "author": "Ivan Reyvart",
   "license": "Apache-2.0",
   "dependencies": {
-    "microdata-types": "github:ivanrave/microdata-types"
+    "microdata-types": "github:ivanrave/microdata-types",
+    "jsdom": "11.x"
   },
   "devDependencies": {
     "chai": "3.x",
     "eslint": "3.x",
     "eslint-config-airbnb-base": "10.x",
     "eslint-plugin-import": "2.x",
-    "jsdom": "11.x",
     "mocha": "3.x",
     "stylelint": "7.x",
     "stylelint-config-standard": "16.x"
