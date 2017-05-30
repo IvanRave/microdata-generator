@@ -29,7 +29,7 @@ module.exports = function(rootEntity, rootSchema, rootStyle, config) {
     const entityUrl = calculateEntityUrl(entityUrlId);
 
     const dom = new jsdom.JSDOM(`<!doctype html>
-<html amp lang="${config.APP_LANG}">
+<html amp lang="${rootEntity.inLanguage || config.APP_LANG}">
 <head>
 <meta charset="utf-8">
 ${config.IS_ANALYTICS ? ampHelper.ANALYTICS_SCRIPT : ''}

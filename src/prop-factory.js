@@ -23,6 +23,7 @@
 const BooleanDisplay = require('./boolean-display');
 const TextDisplay = require('./text-display');
 const MultitextDisplay = require('./multitext-display');
+const CodeDisplay = require('./code-display');
 const TelephoneDisplay = require('./telephone-display');
 const EmailDisplay = require('./email-display');
 const NumberDisplay = require('./number-display');
@@ -88,6 +89,8 @@ const calculateDisplay = function(tag) {
       return DateDisplay;
     case 'text-display':
       return TextDisplay;
+    case 'code-display':
+      return CodeDisplay;
     case 'multitext-display':
       return MultitextDisplay;
     case 'number-display':

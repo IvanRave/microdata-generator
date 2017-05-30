@@ -13,6 +13,7 @@ const ImageDisplay = require('./image-display');
 const BooleanDisplay = require('./boolean-display');
 const TextDisplay = require('./text-display');
 const MultitextDisplay = require('./multitext-display');
+const CodeDisplay = require('./code-display');
 const NumberDisplay = require('./number-display');
 
 const reselectOptions = function(elem, value) {
@@ -91,6 +92,8 @@ const selectHandler = function(schemaType) {
       return TextDisplay;
     case 'Multitext':
       return MultitextDisplay;
+    case 'Code':
+      return CodeDisplay;
     case 'Number':
     case 'Integer':
     case 'Float':
