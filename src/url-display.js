@@ -20,7 +20,7 @@ module.exports = {
 
       // const a = document.createElement('a');
       elem.href = url;
-      elem.textContent = urlText;
+      elem.textContent = decodeURI(urlText);
       // elem.setAttribute('content', url);
       // TODO: yandex required only href
       // AMP: The attribute 'href' may not appear in tag 'span'.
