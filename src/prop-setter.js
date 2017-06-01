@@ -1,5 +1,24 @@
 /**
  * Set property value: input or display
+ * A component builded in a factory
+ *
+ * 1.
+ * Ideally a component must have an Update method, like
+ *   - elem.value = 123      (for number-display)
+ *   - elem.checked = true   (for boolean-display)
+ *   - elem.href = 'http...' (for url-display)
+ * but all components must have the same interface (factory method)
+ * It is a bad practice to extend DOM elements:
+ * https://stackoverflow.com/a/4670470/1197421
+ *
+ * 2.
+ * Creating wrapper objects around DOM nodes
+ *   as jQuery, YUI and other libraries do.
+ * But it means that you need to use very specific $.get methods
+ *   through a whole project: it is difficult to change a library
+ *
+ * 3.
+ * Use helpers
  */
 
 'use strict';

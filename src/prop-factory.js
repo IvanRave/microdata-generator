@@ -71,35 +71,35 @@ const calculateInput = function(tag) {
   }
 };
 
-const calculateDisplay = function(tag) {
-  switch (tag) {
-    case 'url-display':
+const calculateDisplay = function(schemaType) {
+  switch (schemaType) {
+    case 'URL':
       return UrlDisplay;
-    case 'urlid-display':
+    case 'URLID':
       return UrlIdDisplay;
-    case 'telephone-display':
+    case 'Telephone':
       return TelephoneDisplay;
-    case 'email-display':
+    case 'Email':
       return EmailDisplay;
-    case 'image-display':
+    case 'Image':
       return ImageDisplay;
-    case 'boolean-display':
+    case 'Boolean':
       return BooleanDisplay;
-    case 'date-display':
+    case 'Date':
       return DateDisplay;
-    case 'text-display':
+    case 'Text':
       return TextDisplay;
-    case 'code-display':
-      return CodeDisplay;
-    case 'multitext-display':
+    case 'Multitext':
       return MultitextDisplay;
-    case 'number-display':
-    case 'integer-display':
-    case 'float-display':
-    case 'age-display':
+    case 'Code':
+      return CodeDisplay;
+    case 'Number':
+    case 'Integer':
+    case 'Float':
+    case 'Age':
       return NumberDisplay;
     default:
-      throw new Error('tag_is_not_supported: ' + tag);
+      throw new Error('propSetter: tag_is_not_supported: ' + schemaType);
   }
 };
 
@@ -119,14 +119,13 @@ module.exports = {
     return elem;
   },
   createDisplay: function(propType, typeChecker) {
-    const tag = propType.toLowerCase() + '-display';
-
-    const elemClass = calculateDisplay(tag).build;
+    const elemClass = calculateDisplay(propType).build;
 
     const elem = elemClass(typeChecker);
 
     elem.setAttribute('data-schema-type', propType);
 
+    const tag = propType.toLowerCase() + '-display';
     // use classes instead tags, while no custom elements
     elem.className = tag;
     return elem;
