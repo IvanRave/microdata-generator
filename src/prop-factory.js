@@ -12,6 +12,28 @@
  *
  * @todo switch to custom elements after release
  * @todo use <template> to clone instead building elems from scratch
+
+ * Set property value: input or display
+ * A component builded in a factory
+ *
+ * 1.
+ * Ideally a component must have an Update method, like
+ *   - elem.value = 123      (for number-display)
+ *   - elem.checked = true   (for boolean-display)
+ *   - elem.href = 'http...' (for url-display)
+ * but all components must have the same interface (factory method)
+ * It is a bad practice to extend DOM elements:
+ * https://stackoverflow.com/a/4670470/1197421
+ *
+ * 2.
+ * Creating wrapper objects around DOM nodes
+ *   as jQuery, YUI and other libraries do.
+ * But it means that you need to use very specific $.get methods
+ *   through a whole project: it is difficult to change a library
+ *
+ * 3.
+ * Use a factory to create a new state of the object
+ *
  * @module
  */
 
@@ -103,6 +125,19 @@ const calculateDisplay = function(schemaType) {
   }
 };
 
+const reselectOptions = function(elem, value) {
+  const options = elem.children;
+  for (let i = options.length - 1; i >= 0; i -= 1) {
+    const needOption = options[i];
+    // setAttribute for static html
+    if (needOption.value === value) {
+      needOption.setAttribute('selected', 'selected');
+    } else {
+      needOption.removeAttribute('selected');
+    }
+  }
+};
+
 module.exports = {
   createInput: function(propType, typeChecker) {
     const tag = propType.toLowerCase() + '-input';
@@ -118,6 +153,47 @@ module.exports = {
     elem.className = tag;
     return elem;
   },
+  /**
+   * Input.value setter
+   * Convert source type to input type (text, checkbox, date)
+   * value - for inputs
+   * textContent - for readable properties
+   * Polyfill for elem.setTypedValue
+   */
+  setInputValue: function(elemInput, value) {
+    // no-param-reassign
+    const elem = elemInput;
+
+    if (value === undefined) {
+      throw new Error('value_can_not_be_undefined');
+    }
+
+    switch (elem.type) {
+      case 'checkbox':
+        elem.checked = value; // null or false or true
+        if (value === true) {
+          elem.setAttribute('checked', 'checked');
+          // default value in some browsers
+          elem.setAttribute('value', 'on');
+        } else {
+          elem.removeAttribute('checked');
+          elem.removeAttribute('value');
+        }
+        break;
+      case 'select-one':
+        // Attribute value not allowed on element select at this point
+        elem.value = value === null ? '' : value;
+        reselectOptions(elem, value);
+        break;
+      default:
+        elem.value = value === null ? '' : value;
+        if (value !== null) {
+          elem.setAttribute('value', value);
+        } else {
+          elem.removeAttribute('value');
+        }
+    }
+  },
   createDisplay: function(propType, typeChecker) {
     const elemClass = calculateDisplay(propType).build;
 
@@ -129,5 +205,22 @@ module.exports = {
     // use classes instead tags, while no custom elements
     elem.className = tag;
     return elem;
+  },
+  setDisplayValue: function(elemDisplay, value) {
+    const elem = elemDisplay;
+
+    if (value === undefined) {
+      throw new Error('value_can_not_be_undefined');
+    }
+
+    const schemaType = elem.getAttribute('data-schema-type');
+
+    if (!schemaType) {
+      throw new Error('required_data-schema-type');
+    }
+
+    const handler = calculateDisplay(schemaType);
+
+    handler.update(elem, value);
   }
 };
