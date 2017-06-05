@@ -3,7 +3,7 @@
  *   using some entity as a root element
  */
 
-const ampHelper = require('./helpers/amp');
+const ampHelper = require('./amp-helper');
 const jsdom = require('jsdom');
 
 jsdom.defaultDocumentFeatures = {

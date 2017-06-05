@@ -1,0 +1,7 @@
+/**
+ * Remove the margin in Firefox and Safari.
+ */
+
+.country-input {
+  margin: 0;
+}

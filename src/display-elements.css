@@ -1,0 +1,19 @@
+/**
+ * Behavior styles only (all business styles overrides these defaults)
+ */
+
+/* @import "./age/age-display.css"; */
+@import "./boolean/boolean-display.css";
+@import "./code/code-display.css";
+/* @import "./country/country-display.css"; */
+/* @import "./date/date-display.css"; */
+/* @import "./decade/decade-display.css"; */
+/* @import "./duration/duration-display.css"; */
+/* @import "./email/email-display.css"; */
+@import "./image/image-display.css";
+/* @import "./multitext/multitext-display.css"; */
+/* @import "./number/number-display.css"; */
+/* @import "./telephone/telephone-display.css"; */
+/* @import "./text/text-display.css"; */
+@import "./url/url-display.css";
+@import "./urlid/urlid-display.css";

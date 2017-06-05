@@ -1,7 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect;
-const helper = require('./microdata');
+const helper = require('./microdata-marker');
 const JSDOM = require('jsdom').JSDOM;
 
 describe('microdata', function() {

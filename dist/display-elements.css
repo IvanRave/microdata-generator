@@ -1,0 +1,87 @@
+/**
+ * Behavior styles only (all business styles overrides these defaults)
+ */
+
+/* @import "./age/age-display.css"; */
+
+/* do not display true|false */
+
+.boolean-display span {
+    display: none;
+  }
+
+.boolean-display[data-state] {
+    padding: 4px;
+  }
+
+.boolean-display[data-state="false"] {
+    background: red;
+  }
+
+.boolean-display[data-state="true"] {
+    background: green;
+  }
+
+.boolean-display[data-state="null"] {
+    background: yellow;
+  }
+
+/**
+ * Based on normalize.css pre
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+
+.code-display {
+  font-family: monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+
+/* @import "./country/country-display.css"; */
+
+/* @import "./date/date-display.css"; */
+
+/* @import "./decade/decade-display.css"; */
+
+/* @import "./duration/duration-display.css"; */
+
+/* @import "./email/email-display.css"; */
+
+/**
+ * Based on normalize.css
+ * Remove the border on images inside links in IE 10-.
+ */
+
+img {
+  border-style: none;
+}
+
+/* @import "./multitext/multitext-display.css"; */
+
+/* @import "./number/number-display.css"; */
+
+/* @import "./telephone/telephone-display.css"; */
+
+/* @import "./text/text-display.css"; */
+
+/**
+ * Based on normalize.css
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+
+.url-display {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}
+
+/**
+ * Based on normalize.css
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+
+.urlid-display {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}

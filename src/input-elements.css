@@ -1,0 +1,19 @@
+/**
+ * Behavior styles only (all business styles overrides these defaults)
+ */
+
+/* @import "./age/age-input.css"; */
+@import "./boolean/boolean-input.css";
+/* @import "./code/code-input.css"; */
+/* @import "./country/country-input.css"; */
+/* @import "./date/date-input.css"; */
+/* @import "./decade/decade-input.css"; */
+/* @import "./duration/duration-input.css"; */
+/* @import "./email/email-input.css"; */
+/* @import "./image/image-input.css"; */
+/* @import "./multitext/multitext-input.css"; */
+/* @import "./number/number-input.css"; */
+/* @import "./telephone/telephone-input.css"; */
+/* @import "./text/text-input.css"; */
+/* @import "./url/url-input.css"; */
+/* @import "./urlid/urlid-input.css"; */

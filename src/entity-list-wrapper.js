@@ -3,7 +3,7 @@
 // const microdata = require('./helpers/microdata');
 const SEPAR = '__';
 
-const microdata = require('./helpers/microdata');
+const microdata = require('./microdata-marker');
 
 const calculateEntityId = function(entityUrlId) {
   if (!entityUrlId) {

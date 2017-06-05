@@ -6,7 +6,7 @@
 'use strict';
 
 const propFactory = require('./prop-factory');
-const microdata = require('./helpers/microdata');
+const microdata = require('./microdata-marker');
 const microdataTypes = require('microdata-types');
 const propRow = require('./prop-row');
 

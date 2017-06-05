@@ -42,26 +42,26 @@
 // at this moment it's not a class
 // will be converted when custom elements will be released
 // browserify doesnt support dynamic requires
-const BooleanDisplay = require('./boolean-display');
-const TextDisplay = require('./text-display');
-const MultitextDisplay = require('./multitext-display');
-const CodeDisplay = require('./code-display');
-const TelephoneDisplay = require('./telephone-display');
-const EmailDisplay = require('./email-display');
-const NumberDisplay = require('./number-display');
-const DateDisplay = require('./date-display');
-const UrlDisplay = require('./url-display');
-const UrlIdDisplay = require('./urlid-display');
-const ImageDisplay = require('./image-display');
+const BooleanDisplay = require('./boolean/boolean-display');
+const TextDisplay = require('./text/text-display');
+const MultitextDisplay = require('./multitext/multitext-display');
+const CodeDisplay = require('./code/code-display');
+const TelephoneDisplay = require('./telephone/telephone-display');
+const EmailDisplay = require('./email/email-display');
+const NumberDisplay = require('./number/number-display');
+const DateDisplay = require('./date/date-display');
+const UrlDisplay = require('./url/url-display');
+const UrlIdDisplay = require('./urlid/urlid-display');
+const ImageDisplay = require('./image/image-display');
 
-const BooleanInput = require('./boolean-input');
-const TextInput = require('./text-input');
-const NumberInput = require('./number-input');
-const AgeInput = require('./age-input');
-const DecadeInput = require('./decade-input');
-const DateInput = require('./date-input');
-const DurationInput = require('./duration-input');
-const CountryInput = require('./country-input');
+const BooleanInput = require('./boolean/boolean-input');
+const TextInput = require('./text/text-input');
+const NumberInput = require('./number/number-input');
+const AgeInput = require('./age/age-input');
+const DecadeInput = require('./decade/decade-input');
+const DateInput = require('./date/date-input');
+const DurationInput = require('./duration/duration-input');
+const CountryInput = require('./country/country-input');
 
 const calculateInput = function(tag) {
   switch (tag) {

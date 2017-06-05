@@ -1,0 +1,201 @@
+/**
+ * Behavior styles only (all business styles overrides these defaults)
+ */
+
+/* @import "./age/age-display.css"; */
+
+/* do not display true|false */
+
+.boolean-display span {
+    display: none;
+  }
+
+.boolean-display[data-state] {
+    padding: 4px;
+  }
+
+.boolean-display[data-state="false"] {
+    background: red;
+  }
+
+.boolean-display[data-state="true"] {
+    background: green;
+  }
+
+.boolean-display[data-state="null"] {
+    background: yellow;
+  }
+
+/**
+ * Based on normalize.css pre
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+
+.code-display {
+  font-family: monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+
+/* @import "./country/country-display.css"; */
+
+/* @import "./date/date-display.css"; */
+
+/* @import "./decade/decade-display.css"; */
+
+/* @import "./duration/duration-display.css"; */
+
+/* @import "./email/email-display.css"; */
+
+/**
+ * Based on normalize.css
+ * Remove the border on images inside links in IE 10-.
+ */
+
+img {
+  border-style: none;
+}
+
+/* @import "./multitext/multitext-display.css"; */
+
+/* @import "./number/number-display.css"; */
+
+/* @import "./telephone/telephone-display.css"; */
+
+/* @import "./text/text-display.css"; */
+
+/**
+ * Based on normalize.css
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+
+.url-display {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}
+
+/**
+ * Based on normalize.css
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+
+.urlid-display {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}
+
+/**
+ * Behavior styles only (all business styles overrides these defaults)
+ */
+
+/* @import "./age/age-input.css"; */
+
+/** https://jsfiddle.net/IvanRave/vp2h2xx3/8/ */
+
+.boolean-input {
+  position: absolute;
+  opacity: 0;
+  width: 50px;
+  height: 25px;
+  z-index: 1000;
+  margin: 0;
+  display: block;
+  box-sizing: boder-box; /* add the correct box sizint in IE10- */
+  padding: 0; /* remove the padding in IE10- */
+}
+
+/* Normal Track */
+
+.boolean-input + div {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: absolute;
+    width: 50px;
+    height: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0.1);
+    -webkit-transition-duration: 0.4s;
+    -webkit-transition-property: background-color, box-shadow;
+    box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0.4);
+  }
+
+/* Checked Track (Blue) */
+
+.boolean-input:checked + div {
+    width: 50px;
+    background-position: 0 0;
+    background-color: #3b89ec;
+    border: 1px solid #0e62cd;
+    box-shadow: inset 0 0 0 10px rgba(59, 137, 259, 1);
+  }
+
+/* Normal Knob */
+
+.boolean-input + div > div {
+    box-sizing: border-box;
+    float: left;
+    width: 21px;
+    height: 21px;
+    border-radius: inherit;
+    background: #fff;
+    -webkit-transition-timing-function: cubic-bezier(0.54, 1.85, 0.5, 1);
+    -webkit-transition-duration: 0.4s;
+    -webkit-transition-property: transform, background-color, box-shadow;
+    -moz-transition-timing-function: cubic-bezier(0.54, 1.85, 0.5, 1);
+    -moz-transition-duration: 0.4s;
+    -moz-transition-property: transform, background-color;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    margin: 1px 0 0 1px;
+    padding: 0;
+  }
+
+/* Checked Knob (Blue Style) */
+
+.boolean-input:checked + div > div {
+    -webkit-transform: translate3d(25px, 0, 0);
+    -moz-transform: translate3d(16px, 0, 0);
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(8, 80, 172, 1);
+  }
+
+/* @import "./code/code-input.css"; */
+
+/* @import "./country/country-input.css"; */
+
+/* @import "./date/date-input.css"; */
+
+/* @import "./decade/decade-input.css"; */
+
+/* @import "./duration/duration-input.css"; */
+
+/* @import "./email/email-input.css"; */
+
+/* @import "./image/image-input.css"; */
+
+/* @import "./multitext/multitext-input.css"; */
+
+/* @import "./number/number-input.css"; */
+
+/* @import "./telephone/telephone-input.css"; */
+
+/* @import "./text/text-input.css"; */
+
+/* @import "./url/url-input.css"; */
+
+/* @import "./urlid/urlid-input.css"; */
+
+.prop-row {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.prop-row > label {
+    font-size: 1rem;
+    color: #555;
+  }

@@ -1,3 +1,11 @@
+/**
+ * Mark elements as microdata entities
+ * - property - itemprop
+ * - list - itemlist
+ * - listElement - itemListElement
+ * Singleton factory
+ */
+
 'use strict';
 
 const SCHEMA_ORG = 'http://schema.org/';
