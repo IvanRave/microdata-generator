@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "eslint --ext .js index.js src/. test/.",
     "lint-css": "stylelint index.css src/**/*.css",
-    "test": "mocha ./src/**/*.spec.js"
+    "test": "mocha ./src/*.spec.js"
   },
   "author": "Ivan Reyvart",
   "license": "Apache-2.0",

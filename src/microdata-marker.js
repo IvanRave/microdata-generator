@@ -3,7 +3,7 @@
  * - property - itemprop
  * - list - itemlist
  * - listElement - itemListElement
- * Singleton factory
+ * Singleton + Decorator
  */
 
 'use strict';

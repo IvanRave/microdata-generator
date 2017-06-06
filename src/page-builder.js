@@ -1,5 +1,5 @@
 /**
- * Generate default markup for a page
+ * Generate default markup for an entire page
  *   using some entity as a root element
  */
 
@@ -26,10 +26,16 @@ module.exports = function(rootEntity, rootSchema, rootStyle, config) {
       throw new Error('required_entity_root_URLID');
     }
 
+    const htmlLang = rootEntity.inLanguage || config.APP_LANG;
+
+    if (!htmlLang) {
+      throw new Error('required_inLanguage_or_APP_LANG');
+    }
+
     const entityUrl = calculateEntityUrl(entityUrlId);
 
     const dom = new jsdom.JSDOM(`<!doctype html>
-<html amp lang="${rootEntity.inLanguage || config.APP_LANG}">
+<html amp lang="${htmlLang}">
 <head>
 <meta charset="utf-8">
 ${config.IS_ANALYTICS ? ampHelper.ANALYTICS_SCRIPT : ''}

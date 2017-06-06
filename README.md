@@ -17,7 +17,7 @@ Usage
 `main.js`
 
 ```js
-var gen = require('microdata-generator');
+var generator = require('microdata-generator');
 
 /**
  * @param {Object} elemRow A DOM element (container) for an entity
@@ -31,7 +31,10 @@ var gen = require('microdata-generator');
  * @param {Boolean} isGlobalDisplayOnly Read mode (no write mode)
  * @returns {Object} Fulfilled DOM element for this entity
  */
- var updatedContainer = gen(...);
+ var updatedContainer = gen.buildEntityElement(...);
+
+ // or
+ var entirePage = gen.buildPage(...);
 ```
 
 Style usage
