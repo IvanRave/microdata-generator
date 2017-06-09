@@ -32,6 +32,10 @@ module.exports = function(rootEntity, rootSchema, rootStyle, config) {
       throw new Error('required_inLanguage_or_APP_LANG');
     }
 
+    if (!config.APP_DOMAIN) {
+      throw new Error('required_config_APP_DOMAIN');
+    }
+
     const entityUrl = calculateEntityUrl(entityUrlId);
 
     const dom = new jsdom.JSDOM(`<!doctype html>

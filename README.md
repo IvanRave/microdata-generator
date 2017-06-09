@@ -11,6 +11,25 @@ Install
 ```npm install --save-dev ivanrave/microdata-generator```
 
 
+Build a page markup
+---
+
+```
+const rootEntity = {}; // use computed-state
+const rootSchema = 'Person'; // schema.org
+const rootStyle  = 'body { color: green; }'; // css for a page
+const config = {
+  APP_LANG: 'en',
+  APP_DOMAIN: 'https://mysite.com',
+  IS_ANALYTICS: false
+};
+
+const dom = microdateGenerator.buildPage(rootEntity, rootSchema, rootStyle, config);
+
+
+```
+
+
 Usage
 ---
 
