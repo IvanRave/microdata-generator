@@ -13,48 +13,62 @@ jsdom.defaultDocumentFeatures = {
 
 const buildEntityElement = require('./entity-builder');
 
-const calculateEntityUrl = function(entityUrlId) {
-  const parts = entityUrlId.split('|');
-  return parts[0] === 'index' ? '' : parts[0];
-};
+const requiredFields = [
+  'mainEntity',
+  'mainSchema',
+  'mainStyle',
+  'title',
+  'description',
+  'lang',
+  'domain'
+];
 
-module.exports = function(rootEntity, rootSchema, rootStyle, config) {
+/**
+ * @param {Object} opts Page entity (options)
+ * @param {Object} opts.mainEntity mainEntityOfPage
+ * @param {String} opts.mainSchema A schema for a mainEntityOfPage
+ * @param {String} opts.mainStyle A css style for a mainEntityOfPage
+ * @param {Boolean} opts.isMainEntityDisplayOnly True if no forms on a page
+ * @param {String} opts.title Page title
+ * @param {String} opts.description Page description
+ * @param {String} opts.lang Page lang | rootEntity.inLanguage
+ * @param {String} opts.domain Site domain
+ * @param {String} opts.url Page canonical url (relative to a domain)
+ * @param {String} opts.ANALYTICS_GOOGLE Google counter
+ * @param {String} opts.ANALYTICS_YANDEX Yandex counter
+ * @returns A promise with resolved ready DOM
+ */
+module.exports = function(opts) {
   return new Promise(function(resolve) {
-    const entityUrlId = rootEntity.url;
+    requiredFields.forEach(function(f) {
+      if (!opts[f]) {
+        throw new Error('required_option: ' + f);
+      }
+    });
 
-    if (!entityUrlId) {
-      throw new Error('required_entity_root_URLID');
+    if (!opts.url && (opts.url !== '')) {
+      throw new Error('required_url_or_empty_string');
     }
 
-    const htmlLang = rootEntity.inLanguage || config.APP_LANG;
-
-    if (!htmlLang) {
-      throw new Error('required_inLanguage_or_APP_LANG');
-    }
-
-    if (!config.APP_DOMAIN) {
-      throw new Error('required_config_APP_DOMAIN');
-    }
-
-    const entityUrl = calculateEntityUrl(entityUrlId);
+    const isAnalytics = !!(opts.ANALYTICS_GOOGLE || opts.ANALYTICS_YANDEX);
 
     const dom = new jsdom.JSDOM(`<!doctype html>
-<html amp lang="${htmlLang}">
+<html amp lang="${opts.lang}">
 <head>
 <meta charset="utf-8">
-${config.IS_ANALYTICS ? ampHelper.ANALYTICS_SCRIPT : ''}
+${isAnalytics ? ampHelper.ANALYTICS_SCRIPT : ''}
 ${ampHelper.COMMON_SCRIPT}
-<title>${rootEntity.name || rootEntity.headline}</title>
-<link rel="canonical" href="${config.APP_DOMAIN}/${entityUrl}" />
+<title>${opts.title}</title>
+<link rel="canonical" href="${opts.domain}/${opts.url}" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 ${ampHelper.COMMON_STYLE}
-<style amp-custom>${rootStyle}</style>
+<style amp-custom>${opts.mainStyle}</style>
 </head>
 <body>
 <div id="root"></div>
-${config.ANALYTICS_GOOGLE ? ampHelper.buildAnalyticsElement('googleanalytics', {
+${opts.ANALYTICS_GOOGLE ? ampHelper.buildAnalyticsElement('googleanalytics', {
   vars: {
-    account: config.ANALYTICS_GOOGLE
+    account: opts.ANALYTICS_GOOGLE
   },
   triggers: {
     track_pageview: {
@@ -63,9 +77,9 @@ ${config.ANALYTICS_GOOGLE ? ampHelper.buildAnalyticsElement('googleanalytics', {
     }
   }
 }) : ''}
-${config.ANALYTICS_YANDEX ? ampHelper.buildAnalyticsElement('metrika', {
+${opts.ANALYTICS_YANDEX ? ampHelper.buildAnalyticsElement('metrika', {
   vars: {
-    counterId: config.ANALYTICS_YANDEX
+    counterId: opts.ANALYTICS_YANDEX
   },
   triggers: {
     track_pageview: {
@@ -79,37 +93,26 @@ ${config.ANALYTICS_YANDEX ? ampHelper.buildAnalyticsElement('metrika', {
 
     global.document = dom.window.document;
 
-    if (rootEntity.description) {
-      // <meta name="description" content="${rootEntity.description}">
-      // a problem with some symbols. like '"'
-      const meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = rootEntity.description
-        .replace(/"/g, '')
-        .replace(/\n/g, ' ');
+    // <meta name="description" content="${rootEntity.description}">
+    // a problem with some symbols. like '"'
+    const meta = document.createElement('meta');
+    meta.name = 'description';
+    meta.content = opts.description
+      .replace(/"/g, '')
+      .replace(/\n/g, ' ');
 
-      document.getElementsByTagName('head')[0].appendChild(meta);
-    } else {
-      console.log('warning_description: ' + entityUrl);
-    }
+    document.getElementsByTagName('head')[0].appendChild(meta);
 
-    const rootContainer = document.getElementById('root');
+    const wrapContainer = document.getElementById('root');
 
-    buildEntityElement(rootContainer,
+    buildEntityElement(wrapContainer,
                        [], // levelPaths (empty for a root)
-                       rootSchema,
-                       rootEntity,
-                       // isGlobalDisplayOnly
-                       true);
+                       opts.mainSchema,
+                       opts.mainEntity,
+                       opts.isMainEntityDisplayOnly);
 
+    // TODO: change to amp-img elements right in generator
     ampHelper.convertImages(document);
-
-    const headerElem = document.getElementById('root__name_content') ||
-      document.getElementById('root__headline_content');
-
-    if (!headerElem) { throw new Error('no_header'); }
-
-    ampHelper.replaceTagName(document, headerElem, 'h1');
 
     setTimeout(function() {
       // TODO: add css before </head> here (to skip CSS serialization)
@@ -118,3 +121,9 @@ ${config.ANALYTICS_YANDEX ? ampHelper.buildAnalyticsElement('metrika', {
     }, 0);
   });
 };
+
+// TODO: html5 markup for elements, like h1, h2, section, etc
+// const headerElem = document.getElementById('root__name_content') ||
+//   document.getElementById('root__headline_content');
+// if (!headerElem) { throw new Error('no_header'); }
+// ampHelper.replaceTagName(document, headerElem, 'h1');

@@ -9,8 +9,7 @@ module.exports = {
     "node": true
   },
   "extends": [
-    "eslint:recommended",
-    "airbnb-base"
+    "eslint:recommended"
   ],
   "globals": {},
   "rules": {
@@ -32,7 +31,7 @@ module.exports = {
       "error",
       "always"
     ],
-    "no-alert": "off",
+    "no-alert": "warn",
     "arrow-body-style": "off",
     "valid-jsdoc": "off",
     "eol-last": "warn",
@@ -45,23 +44,19 @@ module.exports = {
     "func-names": "off",
     "prefer-arrow-callback": "off",
     "prefer-rest-params": "off",
-    "padded-blocks": "warn",
+    "padded-blocks": "off",
     "prefer-template": "off",
     "vars-on-top": "off",
     "max-len": "off",
     "quote-props": "off",
     "no-unused-expressions": "off",
     "no-underscore-dangle": "off",
-    "no-var": "off",
+    "no-var": "warn",
     "strict": "off",
     "no-param-reassign": [ "error", { "props": false }],
     "no-console": "off",
     "spaced-comment": "warn",
     "space-before-function-paren": "off",
-    "import/no-extraneous-dependencies": [
-      "warn",
-      { "devDependencies": true }
-    ],
     "no-restricted-syntax": [
       "error",
       "ArrowFunctionExpression",

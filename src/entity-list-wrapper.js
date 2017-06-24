@@ -1,9 +1,7 @@
 'use strict';
 
-// const microdata = require('./helpers/microdata');
-const SEPAR = '__';
-
 const microdata = require('./microdata-marker');
+const idMarker = require('./id-marker');
 
 const calculateEntityId = function(entityUrlId) {
   if (!entityUrlId) {
@@ -20,12 +18,16 @@ module.exports = {
                         entitySchema,
                         pathLevels,
                         parentPropName,
-                        isGlobalDisplayOnly,
+                        isEntityDisplayOnly,
                         buildEntityElem,
                         isHashMap,
                         PRIMARY_KEY) {
     if (!elemSection) {
       throw new Error('required_elemSection');
+    }
+
+    if (isHashMap === true && isEntityDisplayOnly !== true) {
+      throw new Error('required_isHashMap_equals_isEntityDisplayOnly_true');
     }
 
     // must be array
@@ -40,7 +42,8 @@ module.exports = {
       if (!entityUrlId) {
         throw new Error('required_urlid: ' + pathLevels.join('.'));
       }
-      return allPathLevels.concat(calculateEntityId(entityUrlId)).join(SEPAR) + '_content';
+
+      return idMarker.makeContentId(allPathLevels.concat(calculateEntityId(entityUrlId)));
     });
 
     const currentElems = elemSection.children;
@@ -68,16 +71,11 @@ module.exports = {
                                          entityPathLevels,
                                          entitySchema,
                                          entity,
-                                         isGlobalDisplayOnly);
+                                         isEntityDisplayOnly);
 
-      if (isHashMap) {
-        // offers: [{}, {}]
-        microdata.markProperty(elemEntity, parentPropName);
-      } else {
-        microdata.markPropertyAsListItem(elemEntity); // , index + 1
-      }
+      microdata.markPropertyAsListItem(elemEntity, parentPropName, isHashMap); // , index + 1
 
-      if (isGlobalDisplayOnly) { return; }
+      if (isEntityDisplayOnly) { return; }
 
       const btn = elemEntity.querySelector('[data-action="removeItem"][data-entity-list-path="' + pathLevels.join('.') + '"]');
 

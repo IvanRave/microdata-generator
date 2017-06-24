@@ -37,12 +37,22 @@ helper.isElementList = function(elem) {
   return ALL_LIST_TYPES.indexOf(itemtype.replace(SCHEMA_ORG, '')) >= 0;
 };
 
-helper.markEntity = function(entityElem, schemaName) {
+helper.markEntity = function(entityElem, schemaName, isEntityDisplayOnly) {
+  // TODO: skip for forms
+  if (!isEntityDisplayOnly) {
+    console.log('warning_mark_entity_for_write_mode');
+  }
+
   entityElem.setAttribute('itemscope', '');
   entityElem.setAttribute('itemtype', SCHEMA_ORG + schemaName);
 };
 
-helper.markEntityList = function(elem, propertyName) {
+helper.markEntityList = function(elem, propertyName, isEntityListDisplayOnly) {
+  // TODO: skip for forms
+  if (!isEntityListDisplayOnly) {
+    console.log('warning_mark_entity_list_for_write_mode');
+  }
+
   elem.setAttribute('itemscope', '');
 
   const schemaNameForList = LIST_VARIANTS[propertyName] || helper.ENTITY_LIST;
@@ -64,9 +74,7 @@ const calculateMarkedName = function(propertyName, sameAsPropertyName) {
   return propertyName;
 };
 
-helper.markProperty = function(propertyElem, propertyName, sameAsPropertyName) {
-  if (!propertyName) { throw new Error('required_propertyName'); }
-
+const markDisplayProperty = function(propertyElem, propertyName, sameAsPropertyName) {
   // Microdata validators do not like empty values
   // - simple elems, like spans
   // - meta with no content ('' or undefined)
@@ -79,11 +87,68 @@ helper.markProperty = function(propertyElem, propertyName, sameAsPropertyName) {
   } else {
     propertyElem.setAttribute('itemprop', calculateMarkedName(propertyName, sameAsPropertyName));
   }
+
+  return propertyElem;
+};
+
+const buildInputName = function(parentPathLevels, propertyName) {
+  const levels = parentPathLevels.concat(propertyName);
+
+  let str = levels[0];
+
+  for (let i = 1; i < levels.length; i += 1) {
+    str += '[' + levels[i] + ']';
+  }
+
+  return str;
+};
+
+/**
+ * Every input element has the name attribute
+ * - name must be unique per a form
+ * - few entities can be in a form
+ * Use concated name '[student][birthDate]'
+ */
+const markInputProperty = function(propertyElem, propertyName, parentPathLevels) {
+  propertyElem.name = buildInputName(parentPathLevels, propertyName);
+  return propertyElem;
+};
+
+/**
+ * @param {Object} propertyElem DOM element
+ * @param {String} propertyName Schema name for this property
+ * @param {String} sameAsPropertyName Aternative name for this property
+ * @returns {Object} The same DOM element with changes:
+ *   - set 'itemprop' for suitable read-only elements
+ *   - set 'name' for read-write form elements, like inputs
+ *   - remove 'itemprop' for empty values (required for validators)
+ */
+helper.markProperty = function(propertyElem, propertyName, sameAsPropertyName, isPropDisplayOnly, parentPathLevels) {
+  if (!propertyName) { throw new Error('required_propertyName'); }
+
+  if (isPropDisplayOnly) {
+    return markDisplayProperty(propertyElem, propertyName, sameAsPropertyName);
+  } else {
+    if (sameAsPropertyName) {
+      throw new Error('input_prop_can_not_have_sameAs: ' + propertyName);
+    }
+
+    // TODO: remove
+    markDisplayProperty(propertyElem, propertyName, sameAsPropertyName);
+    return markInputProperty(propertyElem, propertyName, parentPathLevels);
+  }
 };
 
 // https://schema.org/ItemList
-helper.markPropertyAsListItem = function(elem) {
-  helper.markProperty(elem, 'itemListElement');
+helper.markPropertyAsListItem = function(elem, parentPropName, isHashMap) {
+  if (isHashMap) {
+    // schema.org hack: a List represents as a plain Scope of elements
+    // offers: [{}, {}]
+    markDisplayProperty(elem, parentPropName, null);
+  } else {
+    markDisplayProperty(elem, 'itemListElement', null);
+    // helper.markProperty(elem, 'itemListElement');
+  }
 
   // // if 'position' not exists - insert it
   // const existingElem = elem.querySelector('[itemprop=position]');

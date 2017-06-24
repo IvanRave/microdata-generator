@@ -9,30 +9,17 @@ const propFactory = require('./prop-factory');
 const microdata = require('./microdata-marker');
 const microdataTypes = require('microdata-types');
 const propRow = require('./prop-row');
+const idMarker = require('./id-marker');
 
 const entityListWrapper = require('./entity-list-wrapper');
 
-const SEPAR = '__';
-
 const PRIMARY_KEY = 'url';
-
-const buildInputName = function(parentPathLevels, propName) {
-  const levels = parentPathLevels.concat(propName);
-
-  let str = levels[0];
-
-  for (let i = 1; i < levels.length; i += 1) {
-    str += '[' + levels[i] + ']';
-  }
-
-  return str;
-};
 
 const destroyEntityElem = function(elemRow,
                                    entityPathLevels) {
   const allPathLevels = ['root'].concat(entityPathLevels);
 
-  const elemEntityId = allPathLevels.join(SEPAR) + '_content';
+  const elemEntityId = idMarker.makeContentId(allPathLevels);
 
   const elemEntity = elemRow.querySelector('#' + elemEntityId);
 
@@ -51,17 +38,17 @@ const destroyEntityElem = function(elemRow,
  * @param {Object} entity An object in computed-state format
  *        https://github.com/ivanRave/computed-state
  *        like 'student', 'person', 'thing', 'membership'
- * @param {Boolean} isGlobalDisplayOnly Read mode (no write mode)
+ * @param {Boolean} isEntityDisplayOnly Read mode (no write mode)
  * @returns {Object} Fulfilled DOM element for this entity
  */
 const buildEntityElem = function(elemRow,
                                  entityPathLevels,
                                  entitySchema,
                                  entity,
-                                 isGlobalDisplayOnly) {
+                                 isEntityDisplayOnly) {
   const allPathLevels = ['root'].concat(entityPathLevels);
 
-  const elemEntityId = allPathLevels.join(SEPAR) + '_content';
+  const elemEntityId = idMarker.makeContentId(allPathLevels);
 
   // entityId can be a plain text or Number
   // but can not be URL with slashes: /projects/123
@@ -77,10 +64,9 @@ const buildEntityElem = function(elemRow,
     elemEntity = document.createElement('div');
     elemEntity.id = elemEntityId;
     // if (entityPathLevels.length > 0) {
-    //   // TODO: propName
-    //   microdata.markProperty(elemEntityContent, propName);
+    //   // TODO: propName mark prop
     // }
-    microdata.markEntity(elemEntity, entitySchema);
+    microdata.markEntity(elemEntity, entitySchema, isEntityDisplayOnly);
     elemRow.appendChild(elemEntity);
     // } else {
     //   // TODO: update all inner properties
@@ -89,7 +75,7 @@ const buildEntityElem = function(elemRow,
 
   // console.log('elemEntityContent', elemEntityContent);
   // update or create
-  buildElementsFromSettings(elemEntity, entityPathLevels, entity, isGlobalDisplayOnly); // eslint-disable-line
+  buildElementsFromSettings(elemEntity, entityPathLevels, entity, isEntityDisplayOnly); // eslint-disable-line
 
   return elemEntity;
 };
@@ -107,7 +93,7 @@ const findOrCreateElemSection = function(elemRow,
                                          entitySettings,
                                          pathLevels,
                                          isHashMap,
-                                         isGlobalDisplayOnly) {
+                                         isParentPropDisplayOnly) {
   const elemExisting = elemRow.querySelector('#' + elemSectionId);
 
   if (elemExisting) { return elemExisting; }
@@ -117,7 +103,7 @@ const findOrCreateElemSection = function(elemRow,
   elemCreated.id = elemSectionId;
   const propName = pathLevels[pathLevels.length - 1];
   if (!isHashMap) {
-    microdata.markEntityList(elemCreated, propName);
+    microdata.markEntityList(elemCreated, propName, isParentPropDisplayOnly);
   }
   elemRow.appendChild(elemCreated);
 
@@ -128,7 +114,7 @@ const findOrCreateElemSection = function(elemRow,
 
   const idPropType = idSetting.type; // 'Country' | 'Integer'
 
-  if (!isGlobalDisplayOnly) {
+  if (!isParentPropDisplayOnly) {
     const elemInsertId = createElemInsertId(idPropType, microdataTypes[idPropType], pathLevels);
     // TODO: or in ItemList element, like [].push
     elemRow.appendChild(elemInsertId);
@@ -157,28 +143,28 @@ const buildEntityListElem = function(elemRow,
                                      entitySettings,
                                      entityList,
                                      isHashMap,
-                                     isGlobalDisplayOnly) {
+                                     isParentPropDisplayOnly) {
   if (pathLevels.length < 1) {
     throw new Error('required_path_levels_non_empty');
   }
 
   const allPathLevels = ['root'].concat(pathLevels);
 
-  const elemSectionId = allPathLevels.join(SEPAR) + '_content';
+  const elemSectionId = idMarker.makeContentId(allPathLevels);
 
   const elemSection = findOrCreateElemSection(elemRow,
                                               elemSectionId,
                                               entitySettings,
                                               pathLevels,
                                               isHashMap,
-                                              isGlobalDisplayOnly);
+                                              isParentPropDisplayOnly);
 
   entityListWrapper.updateItems(elemSection,
                                 entityList,
                                 entitySchema,
                                 pathLevels,
                                 parentPropName,
-                                isGlobalDisplayOnly,
+                                isParentPropDisplayOnly,
                                 buildEntityElem,
                                 isHashMap,
                                 PRIMARY_KEY);
@@ -206,7 +192,7 @@ const buildSimpleElem = function(elemRow,
                                  isDisplayOnly) {
   const allPathLevels = ['root'].concat(parentPathLevels.concat(propName));
 
-  const propContentId = allPathLevels.join(SEPAR) + '_content';
+  const propContentId = idMarker.makeContentId(allPathLevels);
 
   let elemProp = elemRow.querySelector('#' + propContentId);
 
@@ -218,7 +204,6 @@ const buildSimpleElem = function(elemRow,
       elemProp = propFactory.createDisplay(propType, typeChecker);
     } else {
       elemProp = propFactory.createInput(propType, typeChecker);
-      elemProp.name = buildInputName(parentPathLevels, propName);
       elemProp.setAttribute('data-entity-path', parentPathLevels.join('.') || 'root');
     }
 
@@ -330,7 +315,7 @@ const buildAnyElem = function(elemRow,
  * @param {Object} entity Like { firtsName: 'Jane' }
  * @returns {Object[]} List of DOM elements
  */
-const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity, isGlobalDisplayOnly) {
+const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity, isEntityDisplayOnly) {
   if (!entity || !elemEntity) {
     // entityElement can not exist without an entity
     throw new Error('entity_and_elemEntity_must_exist');
@@ -352,7 +337,7 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
       throw new Error('required_label: ' + propName);
     }
 
-    const isPropDisplayOnly = isGlobalDisplayOnly ||
+    const isPropDisplayOnly = isEntityDisplayOnly ||
       !!propSetting.calculate ||
       parentPathLevels.indexOf('data') >= 0 ||
       propName === 'loading' ||
@@ -361,7 +346,7 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
     // TODO: root__
     const allPathLevels = ['root'].concat(parentPathLevels.concat(propName));
 
-    const propGlobalId = allPathLevels.join(SEPAR);
+    const propGlobalId = idMarker.makeId(allPathLevels);
 
     let elemRow = elemEntity.querySelector('#' + propGlobalId);
 
@@ -373,10 +358,10 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
       elemRow.setAttribute('data-prop-row', propName);
 
       const elemLabel = document.createElement('label');
-      elemLabel.id = propGlobalId + '_label';
+      elemLabel.id = idMarker.makeLabelId(allPathLevels);
       // if writable property, like <input>
       if (!isPropDisplayOnly) {
-        elemLabel.htmlFor = propGlobalId + '_content';
+        elemLabel.htmlFor = idMarker.makeContentId(allPathLevels);
       }
 
       elemLabel.textContent = propLabel;
@@ -393,7 +378,7 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
 
     if (anyElem) {
       if (propSetting.isHashMap !== true) {
-        microdata.markProperty(anyElem, propName, propSetting.sameAsProperty);
+        microdata.markProperty(anyElem, propName, propSetting.sameAsProperty, isPropDisplayOnly, parentPathLevels);
       }
     }
   });

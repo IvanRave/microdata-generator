@@ -44,7 +44,7 @@ describe('microdata', function() {
   it('should markProperty:simple', function() {
     container.textContent = 'demoPropertyValue';
 
-    helper.markProperty(container, 'demoProperty', null);
+    helper.markProperty(container, 'demoProperty', null, true, []);
 
     expect(container.outerHTML).to.equal('<div itemprop="demoProperty">demoPropertyValue</div>');
   });
@@ -52,7 +52,7 @@ describe('microdata', function() {
   it('should markProperty:content', function() {
     container.setAttribute('content', 'demoPropertyValue');
 
-    helper.markProperty(container, 'demoProperty', null);
+    helper.markProperty(container, 'demoProperty', null, true, []);
 
     expect(container.outerHTML).to.equal('<div content="demoPropertyValue" itemprop="demoProperty"></div>');
   });
@@ -61,21 +61,21 @@ describe('microdata', function() {
     const img = document.createElement('img');
     img.src = '#';
 
-    helper.markProperty(img, 'demoProperty', null);
+    helper.markProperty(img, 'demoProperty', null, true, []);
 
     expect(img.outerHTML).to.equal('<img src="#" itemprop="demoProperty">');
   });
 
   it('should markProperty:sameAsProperty', function() {
     container.textContent = '123';
-    helper.markProperty(container, 'demoProperty', 'otherProperty');
+    helper.markProperty(container, 'demoProperty', 'otherProperty', true, []);
 
     expect(container.outerHTML).to.equal('<div itemprop="demoProperty otherProperty">123</div>');
   });
 
   it('should markProperty:sameAsProperty as sameAs', function() {
     container.textContent = '123';
-    helper.markProperty(container, 'demoProperty', 'sameAs');
+    helper.markProperty(container, 'demoProperty', 'sameAs', true, []);
 
     expect(container.outerHTML).to.equal('<div itemprop="sameAs">123</div>');
   });
