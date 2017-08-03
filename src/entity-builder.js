@@ -332,11 +332,6 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
       throw new Error('prop_can_not_be_undefined');
     }
 
-    const propLabel = propSetting.label;
-    if (!propLabel) {
-      throw new Error('required_label: ' + propName);
-    }
-
     const isPropDisplayOnly = isEntityDisplayOnly ||
       !!propSetting.calculate ||
       parentPathLevels.indexOf('data') >= 0 ||
@@ -351,21 +346,11 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
     let elemRow = elemEntity.querySelector('#' + propGlobalId);
 
     if (!elemRow) {
-      // If no property - create a wrap + label + content
+      // If no property - create a wrap + content field
       // add it to the parent block
       // and update inner value
       elemRow = propRow(propGlobalId);
       elemRow.setAttribute('data-prop-row', propName);
-
-      const elemLabel = document.createElement('label');
-      elemLabel.id = idMarker.makeLabelId(allPathLevels);
-      // if writable property, like <input>
-      if (!isPropDisplayOnly) {
-        elemLabel.htmlFor = idMarker.makeContentId(allPathLevels);
-      }
-
-      elemLabel.textContent = propLabel;
-      elemRow.appendChild(elemLabel); // <td>label</td>
 
       // Add to parent entity TODO: update
       elemEntity.appendChild(elemRow);

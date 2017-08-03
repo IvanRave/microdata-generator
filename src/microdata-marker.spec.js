@@ -8,7 +8,8 @@ describe('microdata', function() {
   let container;
 
   beforeEach(function() {
-    const dom = new JSDOM('<!DOCTYPE html><body></body></html>');
+    const dom = new JSDOM(`<!DOCTYPE html><body></body>`);
+
     global.document = dom.window.document;
     container = document.createElement('div');
     document.body.appendChild(container);

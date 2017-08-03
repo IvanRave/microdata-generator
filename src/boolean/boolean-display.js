@@ -1,4 +1,4 @@
-/** Boolean label */
+/** Boolean display */
 
 'use strict';
 
