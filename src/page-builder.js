@@ -42,7 +42,7 @@ module.exports = function(opts) {
   return new Promise(function(resolve) {
     requiredFields.forEach(function(f) {
       if (!opts[f]) {
-        throw new Error('required_option: ' + f);
+        throw new Error('required_option: ' + f + ' for url: ' + opts.url);
       }
     });
 
@@ -67,27 +67,27 @@ ${ampHelper.COMMON_STYLE}
 <body>
 <div id="root"></div>
 ${opts.ANALYTICS_GOOGLE ? ampHelper.buildAnalyticsElement('googleanalytics', {
-  vars: {
-    account: opts.ANALYTICS_GOOGLE
-  },
-  triggers: {
-    track_pageview: {
-      on: 'visible',
-      request: 'pageview'
+    vars: {
+      account: opts.ANALYTICS_GOOGLE
+    },
+    triggers: {
+      track_pageview: {
+        on: 'visible',
+        request: 'pageview'
+      }
     }
-  }
-}) : ''}
-${opts.ANALYTICS_YANDEX ? ampHelper.buildAnalyticsElement('metrika', {
-  vars: {
-    counterId: opts.ANALYTICS_YANDEX
-  },
-  triggers: {
-    track_pageview: {
-      on: 'visible',
-      request: 'pageview'
+  }) : ''}
+  ${opts.ANALYTICS_YANDEX ? ampHelper.buildAnalyticsElement('metrika', {
+    vars: {
+      counterId: opts.ANALYTICS_YANDEX
+    },
+    triggers: {
+      track_pageview: {
+        on: 'visible',
+        request: 'pageview'
+      }
     }
-  }
-}) : ''}
+  }) : ''}
 </body>
 </html>`);
 

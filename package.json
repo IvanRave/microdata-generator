@@ -1,6 +1,6 @@
 {
   "name": "microdata-generator",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Generate an html markup from an entity (js object). Update a DOM element with current state of an entity.",
   "main": "index.js",
   "style": "index.css",
@@ -16,13 +16,13 @@
   "author": "Ivan Reyvart",
   "license": "Apache-2.0",
   "dependencies": {
-    "jsdom": "^11.1.0",
+    "jsdom": "^11.2.0",
     "microdata-types": "github:ivanrave/microdata-types"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
-    "clean-css-cli": "^4.1.5",
-    "eslint": "^4.3.0",
+    "chai": "^4.1.2",
+    "clean-css-cli": "^4.1.9",
+    "eslint": "^4.6.0",
     "mocha": "^3.5.0",
     "postcss-apply": "^0.8.0",
     "postcss-calc": "^6.0.0",
@@ -30,7 +30,7 @@
     "postcss-color-function": "^4.0.0",
     "postcss-custom-properties": "^6.1.0",
     "postcss-import": "^10.0.0",
-    "postcss-nested": "^2.1.0",
+    "postcss-nested": "^2.1.2",
     "postcss-reporter": "^5.0.0",
     "stylelint": "^8.0.0",
     "stylelint-config-standard": "^17.0.0"

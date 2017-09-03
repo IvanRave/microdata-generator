@@ -17,7 +17,19 @@ module.exports = {
     "indent": [
       "error",
       2,
-      { "SwitchCase": 1 }
+      {
+        "SwitchCase": 1,
+        "MemberExpression": "off",
+        "FunctionDeclaration": {
+          "parameters": "first"
+        },
+        "FunctionExpression": {
+          "parameters": "first"
+        },
+        "CallExpression": {
+          "arguments": "first"
+        }
+      }
     ],
     "linebreak-style": [
       "error",
