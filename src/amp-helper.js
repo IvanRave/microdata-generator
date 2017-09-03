@@ -24,22 +24,22 @@ const replaceTagName = function(doc, original, tagName) {
 module.exports = {
   replaceTagName: replaceTagName,
   convertImages: function(doc) {
+    // NodeList (live at any moment of building DOM)
     const imgElements = doc.getElementsByTagName('img');
 
-    for (let imgIndex = 0, imgLength = imgElements.length; imgIndex < imgLength; imgIndex += 1) {
-      const imgNew = replaceTagName(doc, imgElements[imgIndex], 'amp-img');
-      imgNew.setAttribute('layout', 'responsive');
+    const imgList = Array.prototype.slice.call(imgElements);
 
-      // <div fallback>
-      //     <p>Your browser doesn’t support HTML5 video.</p>
-      //   </div>
+    imgList.forEach(function(imgItem) {
+      const imgNew = replaceTagName(doc, imgItem, 'amp-img');
+
+      imgNew.setAttribute('layout', 'responsive');
 
       const fallback = doc.createElement('div');
       fallback.setAttribute('fallback', '');
       fallback.textContent = 'no photo';
 
       imgNew.appendChild(fallback);
-    }
+    });
   },
   // https://www.ampproject.org/docs/tutorials/create/basic_markup
   COMMON_STYLE: '<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>',
