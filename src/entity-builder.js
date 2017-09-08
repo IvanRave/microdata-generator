@@ -323,6 +323,11 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
 
   const entitySettings = entity.__settings;
 
+  if (!entitySettings) {
+    console.log('entity', entity);
+    throw new Error('no_entity__settings');
+  }
+
   Object.keys(entitySettings).forEach(function(propName) {
     // student['name']
     const propSetting = entitySettings[propName];

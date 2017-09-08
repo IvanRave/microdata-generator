@@ -23,6 +23,7 @@ const requiredFields = [
   'domain'
 ];
 
+
 /**
  * @param {Object} opts Page entity (options)
  * @param {Object} opts.mainEntity mainEntityOfPage
@@ -61,6 +62,7 @@ ${ampHelper.COMMON_SCRIPT}
 <title>${opts.title}</title>
 <link rel="canonical" href="${opts.domain}/${opts.url}" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+${opts.isMainEntityDisplayOnly ? '' : ampHelper.FORM_SCRIPT}
 ${ampHelper.COMMON_STYLE}
 <style amp-custom>${opts.mainStyle}</style>
 </head>
