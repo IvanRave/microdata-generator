@@ -1,6 +1,10 @@
 Microdata generator
 ===
 
+[![Build Status](https://travis-ci.org/IvanRave/microdata-generator.svg?branch=master)](https://travis-ci.org/IvanRave/microdata-generator)
+
+[Более подробно на русском языке](./README-RU.md)
+
 Generate an html markup from an entity (js object).
 Update a DOM element with current state of an entity.
 
