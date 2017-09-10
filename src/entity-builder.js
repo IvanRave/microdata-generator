@@ -15,11 +15,12 @@ const entityListWrapper = require('./entity-list-wrapper');
 
 const PRIMARY_KEY = 'url';
 
+/**
+ * @param {String[]} entityPathLevels root.student.teacher.name or root.dateVisa
+ */
 const destroyEntityElem = function(elemRow,
                                    entityPathLevels) {
-  const allPathLevels = ['root'].concat(entityPathLevels);
-
-  const elemEntityId = idMarker.makeContentId(allPathLevels);
+  const elemEntityId = idMarker.makeContentId(entityPathLevels);
 
   const elemEntity = elemRow.querySelector('#' + elemEntityId);
 
@@ -42,13 +43,11 @@ const destroyEntityElem = function(elemRow,
  * @returns {Object} Fulfilled DOM element for this entity
  */
 const buildEntityElem = function(elemRow,
-                                 entityPathLevels,
+                                 entityPathLevels, // ['root', ...]
                                  entitySchema,
                                  entity,
                                  isEntityDisplayOnly) {
-  const allPathLevels = ['root'].concat(entityPathLevels);
-
-  const elemEntityId = idMarker.makeContentId(allPathLevels);
+  const elemEntityId = idMarker.makeContentId(entityPathLevels);
 
   // entityId can be a plain text or Number
   // but can not be URL with slashes: /projects/123
@@ -130,7 +129,7 @@ const findOrCreateElemSection = function(elemRow,
 
 /**
  * It doesnt depends of property name of a parent entity
- * @param {String[]} pathLevels Like ['university', 'students']
+ * @param {String[]} pathLevels Like ['root', 'university', 'students']
  *        Last String must be plural (collection of entities)
  * @param {String} entitySchema A schema for an item of this collection, like 'Person'
  * @param {Object} entitySettings A template for an item of this collection
@@ -148,9 +147,7 @@ const buildEntityListElem = function(elemRow,
     throw new Error('required_path_levels_non_empty');
   }
 
-  const allPathLevels = ['root'].concat(pathLevels);
-
-  const elemSectionId = idMarker.makeContentId(allPathLevels);
+  const elemSectionId = idMarker.makeContentId(pathLevels);
 
   const elemSection = findOrCreateElemSection(elemRow,
                                               elemSectionId,
@@ -190,7 +187,7 @@ const buildSimpleElem = function(elemRow,
                                  propType,
                                  propValue,
                                  isDisplayOnly) {
-  const allPathLevels = ['root'].concat(parentPathLevels.concat(propName));
+  const allPathLevels = parentPathLevels.concat(propName);
 
   const propContentId = idMarker.makeContentId(allPathLevels);
 
@@ -204,7 +201,8 @@ const buildSimpleElem = function(elemRow,
       elemProp = propFactory.createDisplay(propType, typeChecker);
     } else {
       elemProp = propFactory.createInput(propType, typeChecker);
-      elemProp.setAttribute('data-entity-path', parentPathLevels.join('.') || 'root');
+      // 'root.some.prop'
+      elemProp.setAttribute('data-entity-path', parentPathLevels.join('.'));
     }
 
     elemProp.id = propContentId;
@@ -311,7 +309,7 @@ const buildAnyElem = function(elemRow,
 
 /**
  * @param {Object} entityTemplate Like {firtsName: {type: 'Text'}}
- * @param {String[]} parentPathLevels Like ['person', 'memberships']
+ * @param {String[]} parentPathLevels Like ['root', 'person', 'memberships']
  * @param {Object} entity Like { firtsName: 'Jane' }
  * @returns {Object[]} List of DOM elements
  */
@@ -343,8 +341,7 @@ const buildElementsFromSettings = function(elemEntity, parentPathLevels, entity,
       propName === 'loading' ||
       propName === 'error';
 
-    // TODO: root__
-    const allPathLevels = ['root'].concat(parentPathLevels.concat(propName));
+    const allPathLevels = parentPathLevels.concat(propName);
 
     const propGlobalId = idMarker.makeId(allPathLevels);
 

@@ -14,27 +14,35 @@ jsdom.defaultDocumentFeatures = {
 const buildEntityElement = require('./entity-builder');
 
 const requiredFields = [
-  'mainEntity',
-  'mainSchema',
-  'mainStyle',
-  'title',
-  'description',
+  'targetEntity',
+  'targetSchema',
+  'targetStyle',
+
+  'formEntity',
+  'formSchema',
+  'formStyle',
+
   'lang',
   'domain'
 ];
 
+const calculateEntityUrl = function(entityUrlId) {
+  const parts = entityUrlId.split('|');
+  return parts[0] === 'index' ? '' : parts[0];
+};
 
 /**
  * @param {Object} opts Page entity (options)
- * @param {Object} opts.mainEntity mainEntityOfPage
- * @param {String} opts.mainSchema A schema for a mainEntityOfPage
- * @param {String} opts.mainStyle A css style for a mainEntityOfPage
- * @param {Boolean} opts.isMainEntityDisplayOnly True if no forms on a page
- * @param {String} opts.title Page title
- * @param {String} opts.description Page description
+ * @param {Object} opts.targetEntity mainEntityOfPage
+ * @param {String} opts.targetSchema A schema for a mainEntityOfPage
+ * @param {String} opts.targetStyle A css style for a mainEntityOfPage
+ * @param {String} opts.formEntity Form entity (user interaction)
+ * @param {String} opts.formSchema Schema
+ * @param {String} opts.formStyle Style
+
  * @param {String} opts.lang Page lang | rootEntity.inLanguage
  * @param {String} opts.domain Site domain
- * @param {String} opts.url Page canonical url (relative to a domain)
+
  * @param {String} opts.ANALYTICS_GOOGLE Google counter
  * @param {String} opts.ANALYTICS_YANDEX Yandex counter
  * @returns A promise with resolved ready DOM
@@ -47,27 +55,35 @@ module.exports = function(opts) {
       }
     });
 
-    if (!opts.url && (opts.url !== '')) {
-      throw new Error('required_url_or_empty_string');
+    const targetEntity = opts.targetEntity;
+    const formEntity = opts.formEntity;
+
+    // URLID
+    if (!targetEntity.url || (targetEntity.url === '')) {
+      throw new Error('required_url_or_index');
     }
+
+    const pageUrl = calculateEntityUrl(targetEntity.url);
 
     const isAnalytics = !!(opts.ANALYTICS_GOOGLE || opts.ANALYTICS_YANDEX);
 
     const dom = new jsdom.JSDOM(`<!doctype html>
 <html amp lang="${opts.lang}">
 <head>
-<meta charset="utf-8">
-${isAnalytics ? ampHelper.ANALYTICS_SCRIPT : ''}
-${ampHelper.COMMON_SCRIPT}
-<title>${opts.title}</title>
-<link rel="canonical" href="${opts.domain}/${opts.url}" />
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-${opts.isMainEntityDisplayOnly ? '' : ampHelper.FORM_SCRIPT}
-${ampHelper.COMMON_STYLE}
-<style amp-custom>${opts.mainStyle}</style>
+  <meta charset="utf-8">
+  ${isAnalytics ? ampHelper.ANALYTICS_SCRIPT : ''}
+  ${ampHelper.COMMON_SCRIPT}
+  <title>${targetEntity.name || targetEntity.headline}</title>
+  <link rel="canonical" href="${opts.domain}/${pageUrl}">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  ${formEntity ? ampHelper.FORM_SCRIPT : ''}
+  ${ampHelper.COMMON_STYLE}
+  <style amp-custom>${opts.targetStyle} ${opts.formStyle}</style>
 </head>
 <body>
-<div id="root"></div>
+  <div id="root"></div>
+  <form id="form" action="${opts.formAction}" method="GET" target="_top">
+  </form>
 ${opts.ANALYTICS_GOOGLE ? ampHelper.buildAnalyticsElement('googleanalytics', {
     vars: {
       account: opts.ANALYTICS_GOOGLE
@@ -99,19 +115,34 @@ ${opts.ANALYTICS_GOOGLE ? ampHelper.buildAnalyticsElement('googleanalytics', {
     // a problem with some symbols. like '"'
     const meta = document.createElement('meta');
     meta.name = 'description';
-    meta.content = opts.description
+    meta.content = targetEntity.description
       .replace(/"/g, '')
       .replace(/\n/g, ' ');
 
     document.getElementsByTagName('head')[0].appendChild(meta);
 
-    const wrapContainer = document.getElementById('root');
+    const targetContainer = document.getElementById('root');
+    const formContainer = document.getElementsByTagName('form')[0];
 
-    buildEntityElement(wrapContainer,
-                       [], // levelPaths (empty for a root)
-                       opts.mainSchema,
-                       opts.mainEntity,
-                       opts.isMainEntityDisplayOnly);
+    if (!formContainer) {
+      throw new Error('required_one_form_per_page');
+    }
+
+    buildEntityElement(targetContainer,
+                       ['root'], // levelPaths (empty for a root)
+                       opts.targetSchema,
+                       targetEntity,
+                       true); // isMainEntityDisplayOnly
+
+    buildEntityElement(formContainer,
+                       ['form'],
+                       opts.formSchema,
+                       formEntity,
+                       false);
+
+    const submitInput = document.createElement('input');
+    submitInput.type = 'submit'; // value = 'Submit' (default)
+    formContainer.appendChild(submitInput);
 
     // TODO: change to amp-img elements right in generator
     ampHelper.convertImages(document);

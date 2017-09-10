@@ -35,15 +35,13 @@ module.exports = {
       throw new Error('required_entityList_array');
     }
 
-    const allPathLevels = ['root'].concat(pathLevels);
-
     const ids = entityList.map(function(entity) {
       const entityUrlId = entity[PRIMARY_KEY];
       if (!entityUrlId) {
         throw new Error('required_urlid: ' + pathLevels.join('.'));
       }
 
-      return idMarker.makeContentId(allPathLevels.concat(calculateEntityId(entityUrlId)));
+      return idMarker.makeContentId(pathLevels.concat(calculateEntityId(entityUrlId)));
     });
 
     const currentElems = elemSection.children;

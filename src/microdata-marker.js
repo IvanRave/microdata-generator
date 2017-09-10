@@ -94,9 +94,10 @@ const markDisplayProperty = function(propertyElem, propertyName, sameAsPropertyN
 const buildInputName = function(parentPathLevels, propertyName) {
   const levels = parentPathLevels.concat(propertyName);
 
-  let str = levels[0];
+  // skip first level [0] = root or form
+  let str = levels[1];
 
-  for (let i = 1; i < levels.length; i += 1) {
+  for (let i = 2; i < levels.length; i += 1) {
     str += '[' + levels[i] + ']';
   }
 
@@ -108,6 +109,7 @@ const buildInputName = function(parentPathLevels, propertyName) {
  * - name must be unique per a form
  * - few entities can be in a form
  * Use concated name '[student][birthDate]'
+ * @param {String[]} parentPathLevels ['form', 'student', 'name']
  */
 const markInputProperty = function(propertyElem, propertyName, parentPathLevels) {
   propertyElem.name = buildInputName(parentPathLevels, propertyName);
@@ -118,6 +120,8 @@ const markInputProperty = function(propertyElem, propertyName, parentPathLevels)
  * @param {Object} propertyElem DOM element
  * @param {String} propertyName Schema name for this property
  * @param {String} sameAsPropertyName Aternative name for this property
+ * @param {Boolean} isPropDisplayOnly Whether the display or input
+ * @param {String[]} parentPathLevels Array of parent paths, ['root', '']
  * @returns {Object} The same DOM element with changes:
  *   - set 'itemprop' for suitable read-only elements
  *   - set 'name' for read-write form elements, like inputs
