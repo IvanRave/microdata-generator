@@ -4,11 +4,9 @@
 
 module.exports = function(typeChecker) {
   const elem = document.createElement('select');
-  // elem.type = 'text';
-  // elem.placeholder = 'country id';
 
   const emptyOption = document.createElement('option');
-  emptyOption.textContent = 'Select a country...';
+  emptyOption.textContent = '';
   emptyOption.value = '';
   elem.appendChild(emptyOption);
 

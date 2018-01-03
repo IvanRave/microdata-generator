@@ -58,6 +58,8 @@ module.exports = function(opts) {
     const targetEntity = opts.targetEntity;
     const formEntity = opts.formEntity;
 
+    const lang = opts.lang;
+
     // URLID
     if (!targetEntity.url || (targetEntity.url === '')) {
       throw new Error('required_url_or_index');
@@ -68,7 +70,7 @@ module.exports = function(opts) {
     const isAnalytics = !!(opts.ANALYTICS_GOOGLE || opts.ANALYTICS_YANDEX);
 
     const dom = new jsdom.JSDOM(`<!doctype html>
-<html amp lang="${opts.lang}">
+<html amp lang="${lang}">
 <head>
   <meta charset="utf-8">
   ${isAnalytics ? ampHelper.ANALYTICS_SCRIPT : ''}
