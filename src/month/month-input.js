@@ -4,7 +4,7 @@
 
 module.exports = function() {
   const elem = document.createElement('input');
-  elem.type = 'date';
+  elem.type = 'month';
   // elem.placeholder = 'dd.mm.yyyy';
   // TODO: manual input later
   // https://github.com/dbushell/Pikaday/issues/520

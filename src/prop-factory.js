@@ -50,6 +50,7 @@ const TelephoneDisplay = require('./telephone/telephone-display');
 const EmailDisplay = require('./email/email-display');
 const NumberDisplay = require('./number/number-display');
 const DateDisplay = require('./date/date-display');
+const MonthDisplay = require('./month/month-display');
 const UrlDisplay = require('./url/url-display');
 const UrlIdDisplay = require('./urlid/urlid-display');
 const ImageDisplay = require('./image/image-display');
@@ -60,6 +61,7 @@ const NumberInput = require('./number/number-input');
 const AgeInput = require('./age/age-input');
 const DecadeInput = require('./decade/decade-input');
 const DateInput = require('./date/date-input');
+const MonthInput = require('./month/month-input');
 const DurationInput = require('./duration/duration-input');
 const CountryInput = require('./country/country-input');
 
@@ -83,6 +85,8 @@ const calculateInput = function(tag) {
       return DecadeInput;
     case 'date-input':
       return DateInput;
+    case 'month-input':
+      return MonthInput;
     case 'duration-input':
       return DurationInput;
     case 'country-input':
@@ -109,6 +113,8 @@ const calculateDisplay = function(schemaType) {
       return BooleanDisplay;
     case 'Date':
       return DateDisplay;
+    case 'Month':
+      return MonthDisplay;
     case 'Text':
       return TextDisplay;
     case 'Multitext':
