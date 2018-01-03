@@ -33,15 +33,6 @@
     box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0.4);
   }
 
-  /* Checked Track (Blue) */
-  &:checked + div {
-    width: var(--track-width);
-    background-position: 0 0;
-    background-color: #3b89ec;
-    border: 1px solid #0e62cd;
-    box-shadow: inset 0 0 0 10px rgba(59, 137, 259, 1);
-  }
-
   /* Normal Knob */
   & + div > div {
     box-sizing: border-box;
@@ -60,6 +51,15 @@
     pointer-events: none;
     margin: 1px 0 0 1px;
     padding: 0;
+  }
+
+  /* Checked Track (Blue) */
+  &:checked + div {
+    width: var(--track-width);
+    background-position: 0 0;
+    background-color: #3b89ec;
+    border: 1px solid #0e62cd;
+    box-shadow: inset 0 0 0 10px rgba(59, 137, 259, 1);
   }
 
   /* Checked Knob (Blue Style) */
