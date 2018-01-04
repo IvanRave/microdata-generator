@@ -65,6 +65,10 @@ module.exports = function(opts) {
       throw new Error('required_url_or_index');
     }
 
+    if (!targetEntity.description) {
+      throw new Error('required_targetEntity.description');
+    }
+
     const pageUrl = calculateEntityUrl(targetEntity.url);
 
     const isAnalytics = !!(opts.ANALYTICS_GOOGLE || opts.ANALYTICS_YANDEX);

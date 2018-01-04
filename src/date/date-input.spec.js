@@ -34,7 +34,7 @@ describe('microdata', function() {
     const input = buildInput();
     input.value = '2017-12-31';
     const date = new Date(input.value);
-    const local = date.toLocaleDateString();
+    const local = date.toLocaleDateString('en');
     expect(local).deep.equals('12/31/2017');
   });
 });
